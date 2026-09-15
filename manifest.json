@@ -3,8 +3,8 @@
   "short_name": "Taiwan",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#0f1115",
-  "theme_color": "#16181d",
+  "background_color": "#0b0a08",
+  "theme_color": "#0b0a08",
   "lang": "en",
   "icons": [
     {

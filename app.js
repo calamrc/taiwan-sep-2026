@@ -1,9 +1,23 @@
 import {
   formatDistance,
   mapsUrl,
+  pickTheme,
   remainingStops,
   resolveGuide,
 } from "./logic.js";
+
+const THEME_BG = {
+  airport: "#07090c",
+  hotel: "#0b0a08",
+  temple: "#120806",
+  night: "#0a0610",
+  mountain: "#0a100c",
+  zoo: "#0a1208",
+  coast: "#071018",
+  taichung: "#140c08",
+  forest: "#07120c",
+  city: "#0c0c0e",
+};
 
 const state = {
   trip: null,
@@ -33,9 +47,9 @@ function showHotel(trip, now) {
 }
 
 function geoStatus() {
-  if (state.geo === "off") return "Location off — using the clock";
+  if (state.geo === "off") return "Location off — clock only";
   if (state.geo === "on") return "Clock + GPS";
-  return "Waiting for location…";
+  return "Waiting for location";
 }
 
 function kicker(guide, day) {
@@ -47,6 +61,20 @@ function kicker(guide, day) {
     return "Next up · leave now";
   }
   return "Next up";
+}
+
+function applyTheme(theme) {
+  const root = document.documentElement;
+  if (root.dataset.theme !== theme) {
+    root.dataset.theme = theme;
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      root.classList.remove("flash");
+      void root.offsetWidth;
+      root.classList.add("flash");
+    }
+  }
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.content = THEME_BG[theme] || THEME_BG.city;
 }
 
 function chips(stop, origin) {
@@ -80,12 +108,15 @@ function stopDetail(stop) {
 
 function stopCard(stop, origin, open) {
   const place = [stop.place, stop.address].filter(Boolean)[0] || "";
-  return `<button class="card ${open ? "open" : ""}" data-toggle="${stop.id}">
-    <div class="title">${formatClock(stop.time)}${stop.time ? " · " : ""}${stop.title}</div>
-    <div class="meta">${place}</div>
-    <div class="detail">
-      <div class="chips">${chips(stop, origin)}</div>
-      ${stopDetail(stop)}
+  return `<button class="stop ${open ? "open" : ""}" data-toggle="${stop.id}">
+    <div class="stop-time">${formatClock(stop.time) || "—"}</div>
+    <div>
+      <div class="title">${stop.title}</div>
+      <div class="meta">${place}</div>
+      <div class="detail">
+        <div class="chips">${chips(stop, origin)}</div>
+        ${stopDetail(stop)}
+      </div>
     </div>
   </button>`;
 }
@@ -96,53 +127,62 @@ function heroCard(guide, origin) {
   const dist = formatDistance(guide.nextDistanceM);
   const placeBits = [stop.place, dist].filter(Boolean).join(" · ");
   const late = guide.behindMinutes > 0 ? " late" : "";
+  const open = state.openId === stop.id ? " open" : "";
   return `<div class="hero${late}">
     <div class="kicker">${kicker(guide, guide.viewingDay)}</div>
     <div class="time">${formatClock(stop.time)}</div>
     <div class="title">${stop.title}</div>
     <div class="meta">${placeBits}</div>
     <div class="chips">${chips(stop, origin)}</div>
-    <button class="card ${state.openId === stop.id ? "open" : ""}" style="margin:10px 0 0;background:#1c1814" data-toggle="${stop.id}">
-      How to go ▾
+    <button class="more${open}" data-toggle="${stop.id}">
+      How to go <span class="caret">${open ? "▴" : "▾"}</span>
       <div class="detail">${stopDetail(stop)}</div>
     </button>
   </div>`;
+}
+
+function dayButtons(days, viewingId) {
+  return days
+    .map((day) => {
+      const on = day.id === viewingId ? " on" : "";
+      const num = day.label.replace(/Day\s+/i, "").padStart(2, "0");
+      const wk = (day.weekday || "").slice(0, 3);
+      return `<button class="day${on}" data-day="${day.id}"><b>${num}</b><span>${wk}</span></button>`;
+    })
+    .join("");
+}
+
+function extraBlock(day, origin) {
+  const extras = (day.extras || [])
+    .map((extra) => {
+      const href = mapsUrl(extra, origin) || "#";
+      return `<a class="extra" href="${href}">${extra.title}<span>${extra.place || extra.note || ""}</span></a>`;
+    })
+    .join("");
+  if (!extras) return "";
+  return `<div class="extras"><div class="kicker">If we have time nearby</div><div class="strip">${extras}</div></div>`;
 }
 
 function render() {
   const { trip, now, position, peekedDayId } = state;
   const guide = resolveGuide({ days: trip.days, now, position, peekedDayId });
   const origin = position;
+  applyTheme(pickTheme(guide));
   const afterNext = remainingStops(
     guide.viewingDay.stops || [],
     guide.nextStop,
     guide.hereStop
   );
-
   const hotel = showHotel(trip, now)
     ? `<a class="hotel" href="${mapsUrl(trip.hotel, origin)}">Hotel</a>`
     : "";
   const here = guide.hereStop
-    ? `<div class="here"><div class="kicker">You are here</div><div class="title">${guide.hereStop.title}</div></div>`
+    ? `<div class="here"><div class="pulse"></div><div><div class="kicker">You are here</div><div class="title">${guide.hereStop.title}</div></div></div>`
     : "";
-  const dayBtns = trip.days
-    .map((day) => {
-      const on = day.id === guide.viewingDay.id ? " on" : "";
-      return `<button class="day${on}" data-day="${day.id}">${day.label.replace("Day ", "D")}</button>`;
-    })
-    .join("");
-  const extras = (guide.viewingDay.extras || [])
-    .map((extra) => {
-      const href = mapsUrl(extra, origin) || "#";
-      return `<a class="extra" href="${href}">${extra.title}<span>${extra.place || extra.note || ""}</span></a>`;
-    })
-    .join("");
-  const extraBlock = extras
-    ? `<div class="extras"><div class="kicker">If we have time nearby</div><div class="strip">${extras}</div></div>`
-    : "";
-  const geo = geoStatus();
+  const peek = guide.isPeeking ? " · peeking" : "";
 
   document.getElementById("app").innerHTML = `
+    <div class="lightbar"></div>
     <div class="top">
       <div>
         <div class="kicker">${trip.title} · ${guide.viewingDay.weekday} ${guide.viewingDay.date.slice(5).replace("-", "/")}</div>
@@ -150,12 +190,12 @@ function render() {
       </div>
       ${hotel}
     </div>
-    <div class="status">${geo}${guide.isPeeking ? " · peeking" : ""}</div>
-    <div class="days">${dayBtns}</div>
+    <div class="status">${geoStatus()}${peek}</div>
+    <div class="days">${dayButtons(trip.days, guide.viewingDay.id)}</div>
     ${here}
     ${heroCard(guide, origin)}
     ${afterNext.map((stop) => stopCard(stop, origin, state.openId === stop.id)).join("")}
-    ${extraBlock}
+    ${extraBlock(guide.viewingDay, origin)}
   `;
 }
 

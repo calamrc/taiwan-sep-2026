@@ -122,3 +122,36 @@ export function formatDistance(meters) {
   if (meters < 1000) return `${Math.round(meters)} m`;
   return `${(meters / 1000).toFixed(meters >= 10000 ? 0 : 1)} km`;
 }
+
+const THEME_RULES = [
+  ["airport", /naia|taoyuan|flight|airport|\btpe\b|immigration|easycard/i],
+  ["hotel", /mayer inn|check in|check out|\bhotel\b/i],
+  ["temple", /lungshan|zhinan temple|\bcks\b|memorial hall|\btemple\b/i],
+  ["zoo", /taipei zoo|\bzoo\b|capybara/i],
+  ["mountain", /maokong|gondola|tea house|redwood/i],
+  ["coast", /yehliu|shifen|jiufen|north coast|fun journey/i],
+  ["taichung", /taichung|rainbow village|miyahara|zhongshe|painted animation|second market|chun shui|houli|xinwuri|\bwuri\b/i],
+  ["forest", /wulai|waterfall|yun hsien|suspension bridge|scenic train|lansheng/i],
+  ["night", /ximend|ningxia|raohe|night market|rainbow road|\bximen\b/i],
+];
+
+function matchTheme(hay) {
+  if (!hay) return null;
+  const hit = THEME_RULES.find(([, re]) => re.test(hay));
+  return hit ? hit[0] : null;
+}
+
+function haystack(parts) {
+  return parts.filter(Boolean).join(" ");
+}
+
+export function pickTheme(guide) {
+  const stop = guide.hereStop || guide.nextStop;
+  const fromTitle = matchTheme(stop?.title);
+  if (fromTitle) return fromTitle;
+  const fromPlace = matchTheme(haystack([stop?.place, stop?.address]));
+  if (fromPlace) return fromPlace;
+  if (stop?.place || stop?.address) return "city";
+  const day = guide.viewingDay || {};
+  return matchTheme(haystack([day.title, day.label])) || "city";
+}

@@ -1,4 +1,4 @@
-const CACHE = "taiwan-v1";
+const CACHE = "taiwan-v2";
 const ASSETS = [
   "./",
   "./index.html",
@@ -8,6 +8,7 @@ const ASSETS = [
   "./itinerary.json",
   "./manifest.json",
   "./icon.svg",
+  "./fonts/outfit.woff2",
 ];
 
 self.addEventListener("install", (event) => {

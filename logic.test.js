@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { isArrived, pickCalendarDay, remainingStops, resolveGuide } from "./logic.js";
+import { isArrived, pickCalendarDay, pickTheme, remainingStops, resolveGuide } from "./logic.js";
 
 const day0 = {
   id: "day-0",
@@ -182,5 +182,159 @@ test("remainingStops lists only stops after the hero", () => {
   assert.deepEqual(
     rest.map((stop) => stop.id),
     ["lungshan", "ximen"]
+  );
+});
+
+test("pickTheme uses the here stop over next", () => {
+  assert.equal(
+    pickTheme({
+      hereStop: { title: "Check in · rest", place: "Mayer Inn" },
+      nextStop: { title: "Lungshan Temple", place: "Wanhua" },
+      viewingDay: { title: "Arrival" },
+    }),
+    "hotel"
+  );
+});
+
+test("pickTheme uses next stop when not arrived", () => {
+  assert.equal(
+    pickTheme({
+      hereStop: null,
+      nextStop: { title: "Capybara Knight Cafe", place: "Tucheng" },
+      viewingDay: { title: "Arrival" },
+    }),
+    "zoo"
+  );
+});
+
+test("pickTheme classifies a temple stop", () => {
+  assert.equal(
+    pickTheme({
+      hereStop: { title: "Lungshan Temple", place: "Wanhua" },
+      nextStop: null,
+      viewingDay: { title: "Arrival" },
+    }),
+    "temple"
+  );
+});
+
+test("pickTheme prefers the zoo stop over a Maokong day title", () => {
+  assert.equal(
+    pickTheme({
+      hereStop: { title: "Taipei Zoo", place: "Wenshan" },
+      nextStop: { title: "Travel to Raohe Night Market" },
+      viewingDay: { title: "Maokong & Zoo" },
+    }),
+    "zoo"
+  );
+});
+
+test("pickTheme falls back to the viewing day when the stop has no place", () => {
+  assert.equal(
+    pickTheme({
+      hereStop: null,
+      nextStop: { title: "Wake up and prepare" },
+      viewingDay: { title: "Taichung", label: "Day 4" },
+    }),
+    "taichung"
+  );
+});
+
+test("pickTheme classifies the airport from next stop", () => {
+  assert.equal(
+    pickTheme({
+      hereStop: null,
+      nextStop: { title: "Arrive in Taiwan", place: "Taoyuan International Airport" },
+      viewingDay: { title: "Arrival" },
+    }),
+    "airport"
+  );
+});
+
+test("pickTheme classifies night markets and Ximen", () => {
+  assert.equal(
+    pickTheme({
+      hereStop: { title: "Ningxia Night Market", place: "Datong" },
+      nextStop: null,
+      viewingDay: { title: "Arrival" },
+    }),
+    "night"
+  );
+});
+
+test("pickTheme classifies the north coast tour", () => {
+  assert.equal(
+    pickTheme({
+      hereStop: null,
+      nextStop: { title: "North Coast tour · Fun Journey", place: "Yehliu · Shifen · Jiufen" },
+      viewingDay: { title: "North Coast" },
+    }),
+    "coast"
+  );
+});
+
+test("pickTheme classifies Wulai as forest", () => {
+  assert.equal(
+    pickTheme({
+      hereStop: { title: "Wulai Waterfall", place: "TONYX cafe for the view" },
+      nextStop: null,
+      viewingDay: { title: "Wulai" },
+    }),
+    "forest"
+  );
+});
+
+test("pickTheme classifies Maokong tea as mountain", () => {
+  assert.equal(
+    pickTheme({
+      hereStop: { title: "Tea houses around Maokong", place: "Maokong" },
+      nextStop: null,
+      viewingDay: { title: "Maokong & Zoo" },
+    }),
+    "mountain"
+  );
+});
+
+test("pickTheme defaults to city", () => {
+  assert.equal(
+    pickTheme({
+      hereStop: { title: "Miss You Brunch & Cafe", place: "Zhongshan" },
+      nextStop: null,
+      viewingDay: { title: "City & homebound" },
+    }),
+    "city"
+  );
+});
+
+test("pickTheme uses the stop title before the place", () => {
+  assert.equal(
+    pickTheme({
+      hereStop: { title: "Travel to Maokong Gondola", place: "Taipei Zoo" },
+      nextStop: null,
+      viewingDay: { title: "Maokong & Zoo" },
+    }),
+    "mountain"
+  );
+});
+
+test("pickTheme does not treat snacks as a temple", () => {
+  assert.equal(
+    pickTheme({
+      hereStop: { title: "Snacks at Carrefour", place: "PROSPERiTY PLAZA Guilin" },
+      nextStop: null,
+      viewingDay: { title: "North Coast" },
+    }),
+    "city"
+  );
+});
+
+test("pickTheme does not keep a city stop on a forest day", () => {
+  assert.equal(
+    pickTheme({
+      hereStop: { title: "Syntrend", place: "Zhongzheng" },
+      nextStop: null,
+      viewingDay: { title: "Wulai" },
+    }),
+    "city"
   );
 });
