@@ -1,10 +1,12 @@
 import {
   formatDistance,
+  heroKicker,
   mapsUrl,
   pickTheme,
   listedStops,
   resolveGuide,
   screenStamp,
+  shouldLeaveNow,
 } from "./logic.js";
 
 const THEME_BG = {
@@ -39,12 +41,6 @@ function formatClock(hhmm) {
   return `${hour12}:${String(minute).padStart(2, "0")} ${suffix}`;
 }
 
-function minutesUntil(day, stop, now) {
-  if (!stop?.time) return null;
-  const when = new Date(`${day.date}T${stop.time}:00+08:00`);
-  return Math.round((when.getTime() - now.getTime()) / 60000);
-}
-
 function showHotel(trip, now) {
   return now.getTime() < new Date(trip.hotel.until).getTime();
 }
@@ -53,17 +49,6 @@ function geoStatus() {
   if (state.geo === "off") return "Location off — clock only";
   if (state.geo === "on") return "Clock + GPS";
   return "Waiting for location";
-}
-
-function kicker(guide, day) {
-  if (guide.behindMinutes > 0) {
-    return `Next up · ${guide.behindMinutes} min behind`;
-  }
-  const until = minutesUntil(day, guide.nextStop, state.now);
-  if (until != null && until <= 30 && until >= 0 && (guide.nextDistanceM || 0) > 150) {
-    return "Next up · leave now";
-  }
-  return "Next up";
 }
 
 function applyTheme(theme) {
@@ -125,15 +110,15 @@ function stopCard(stop, origin, open, past) {
   </button>`;
 }
 
-function heroCard(guide, origin) {
-  const stop = guide.nextStop;
+function heroCard(guide, origin, leaveNow) {
+  const stop = guide.highlightStop;
   if (!stop) return `<div class="hero"><div class="title">That's the day</div></div>`;
-  const dist = formatDistance(guide.nextDistanceM);
+  const dist = guide.hereStop ? null : formatDistance(guide.nextDistanceM);
   const placeBits = [stop.place, dist].filter(Boolean).join(" · ");
   const late = guide.behindMinutes > 0 ? " late" : "";
   const open = state.openId === stop.id ? " open" : "";
   return `<div class="hero${late}">
-    <div class="kicker">${kicker(guide, guide.viewingDay)}</div>
+    <div class="kicker">${heroKicker(guide, leaveNow)}</div>
     <div class="time">${formatClock(stop.time)}</div>
     <div class="title">${stop.title}</div>
     <div class="meta">${placeBits}</div>
@@ -171,9 +156,7 @@ function render() {
   const { trip, now, position, peekedDayId } = state;
   const guide = resolveGuide({ days: trip.days, now, position, peekedDayId });
   const origin = position;
-  const until = minutesUntil(guide.viewingDay, guide.nextStop, now);
-  const leaveNow =
-    until != null && until <= 30 && until >= 0 && (guide.nextDistanceM || 0) > 150;
+  const leaveNow = shouldLeaveNow(guide, now);
   const stamp = screenStamp(guide, {
     openId: state.openId,
     geo: state.geo,
@@ -191,19 +174,16 @@ function render() {
   const hotel = showHotel(trip, now)
     ? `<a class="hotel" href="${mapsUrl(trip.hotel, origin)}">Hotel</a>`
     : "";
-  const here = guide.hereStop
-    ? `<div class="here"><div class="pulse"></div><div><div class="kicker">You are here</div><div class="title">${guide.hereStop.title}</div></div></div>`
-    : "";
   const peek = guide.isPeeking ? " · peeking" : "";
-  const nextId = guide.nextStop && guide.nextStop.id;
+  const highlightId = guide.highlightStop && guide.highlightStop.id;
   const rows = listed
     .map((item) =>
-      item.stop.id === nextId
-        ? heroCard(guide, origin)
+      item.stop.id === highlightId
+        ? heroCard(guide, origin, leaveNow)
         : stopCard(item.stop, origin, state.openId === item.stop.id, item.past)
     )
     .join("");
-  const done = nextId ? "" : heroCard(guide, origin);
+  const done = highlightId ? "" : heroCard(guide, origin, leaveNow);
 
   document.getElementById("app").innerHTML = `
     <div class="lightbar"></div>
@@ -216,7 +196,6 @@ function render() {
     </div>
     <div class="status">${geoStatus()}${peek}</div>
     <div class="days">${dayButtons(trip.days, guide.viewingDay.id)}</div>
-    ${here}
     ${rows}
     ${done}
     ${extraBlock(guide.viewingDay, origin)}

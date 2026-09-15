@@ -273,32 +273,6 @@ h1 {
   box-shadow: 0 0 16px var(--glow);
 }
 
-.here {
-  display: grid;
-  grid-template-columns: 8px 1fr;
-  gap: 12px;
-  align-items: center;
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: 2px;
-  padding: 10px 12px;
-  margin-bottom: 12px;
-  clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
-}
-.here .pulse {
-  width: 8px;
-  height: 24px;
-  background: var(--here);
-  box-shadow: 0 0 12px var(--glow);
-  animation: here-pulse 1.8s ease-in-out infinite;
-}
-@keyframes here-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.35; }
-}
-.here .kicker { color: var(--here); }
-.here .title { font-size: 14px; font-weight: 650; }
-
 .hero {
   position: relative;
   overflow: hidden;
@@ -452,7 +426,6 @@ a { color: var(--bar); }
     transition: none !important;
   }
   html.flash .lightbar,
-  .here .pulse,
   .open .detail {
     animation: none !important;
   }

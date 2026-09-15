@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { isArrived, listedStops, pickCalendarDay, pickFetchBody, pickTheme, resolveGuide, screenStamp } from "./logic.js";
+import { isArrived, heroKicker, listedStops, pickCalendarDay, pickFetchBody, pickTheme, resolveGuide, screenStamp, shouldLeaveNow } from "./logic.js";
 
 const day0 = {
   id: "day-0",
@@ -89,6 +89,7 @@ test("at the hotel before 9:00, next up is Capybara and here is empty", () => {
   });
   assert.equal(g.hereStop, null);
   assert.equal(g.nextStop.id, "capy");
+  assert.equal(g.highlightStop.id, "capy");
   assert.equal(g.behindMinutes, 0);
   assert.ok(g.nextDistanceM > 1000);
 });
@@ -101,6 +102,7 @@ test("within 150 m of Capybara, that stop becomes you-are-here and Lungshan is n
   });
   assert.equal(g.hereStop.id, "capy");
   assert.equal(g.nextStop.id, "lungshan");
+  assert.equal(g.highlightStop.id, "capy");
 });
 
 test("still at Capybara after 11:00 does not skip ahead; Lungshan is behind", () => {
@@ -111,7 +113,20 @@ test("still at Capybara after 11:00 does not skip ahead; Lungshan is behind", ()
   });
   assert.equal(g.hereStop.id, "capy");
   assert.equal(g.nextStop.id, "lungshan");
+  assert.equal(g.highlightStop.id, "capy");
   assert.equal(g.behindMinutes, 25);
+});
+
+test("at Lungshan after 11:00, location clears late for that stop", () => {
+  const g = resolveGuide({
+    days,
+    now: at("2026-09-16T11:25:00+08:00"),
+    position: { lat: 25.04, lng: 121.5 },
+  });
+  assert.equal(g.hereStop.id, "lungshan");
+  assert.equal(g.highlightStop.id, "lungshan");
+  assert.equal(g.nextStop.id, "ximen");
+  assert.equal(g.behindMinutes, 0);
 });
 
 test("without GPS, 8:50 uses the clock and picks Capybara", () => {
@@ -201,24 +216,26 @@ test("listedStops keeps itinerary order around the next stop", () => {
   );
 });
 
-test("listedStops skips you-are-here and keeps the next stop in order", () => {
+test("listedStops keeps you-are-here as the current highlight", () => {
   const listed = listedStops(day1.stops, day1.stops[1], day1.stops[0]);
   assert.deepEqual(
     listed.map((item) => [item.stop.id, item.past]),
     [
+      ["capy", false],
       ["lungshan", false],
       ["ximen", false],
     ]
   );
 });
 
-test("listedStops marks the rest of the day past when next is empty", () => {
+test("listedStops marks earlier stops past when the last stop is current", () => {
   const listed = listedStops(day1.stops, null, day1.stops[2]);
   assert.deepEqual(
     listed.map((item) => [item.stop.id, item.past]),
     [
       ["capy", true],
       ["lungshan", true],
+      ["ximen", false],
     ]
   );
 });
@@ -411,6 +428,52 @@ test("open stop and geo status are part of the screen stamp", () => {
     screenStamp(guide, { openId: "capy", geo: "on" }),
     screenStamp(guide, { openId: "capy", geo: "off" })
   );
+});
+
+test("hero kicker names the current stop when arrived", () => {
+  const g = resolveGuide({
+    days,
+    now: at("2026-09-16T10:08:00+08:00"),
+    position: nearCapy,
+  });
+  assert.equal(heroKicker(g, false), "You are here");
+});
+
+test("hero kicker uses location and time for behind", () => {
+  const g = resolveGuide({
+    days,
+    now: at("2026-09-16T11:25:00+08:00"),
+    position: nearCapy,
+  });
+  assert.equal(heroKicker(g, false), "You are here · 25 min behind");
+});
+
+test("hero kicker stays Next up when not arrived", () => {
+  const g = resolveGuide({
+    days,
+    now: at("2026-09-16T08:50:00+08:00"),
+    position: hotel,
+  });
+  assert.equal(heroKicker(g, false), "Next up");
+});
+
+test("leave now is time within 30 min and location still away", () => {
+  const g = resolveGuide({
+    days,
+    now: at("2026-09-16T08:50:00+08:00"),
+    position: hotel,
+  });
+  assert.equal(shouldLeaveNow(g, at("2026-09-16T08:50:00+08:00")), true);
+  assert.equal(heroKicker(g, true), "Next up · leave now");
+});
+
+test("leave now is false without GPS even if the clock is close", () => {
+  const g = resolveGuide({
+    days,
+    now: at("2026-09-16T08:50:00+08:00"),
+    position: null,
+  });
+  assert.equal(shouldLeaveNow(g, at("2026-09-16T08:50:00+08:00")), false);
 });
 
 test("pickTheme does not keep a city stop on a forest day", () => {

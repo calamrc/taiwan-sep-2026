@@ -29,7 +29,7 @@ export function pickCalendarDay(days, now) {
 }
 
 function stopDateTime(day, stop) {
-  if (!stop.time) return null;
+  if (!stop?.time) return null;
   return new Date(`${day.date}T${stop.time}:00+08:00`);
 }
 
@@ -58,11 +58,27 @@ function distanceTo(stop, position) {
   return distanceMeters(position, { lat: stop.lat, lng: stop.lng });
 }
 
-function minutesBehind(day, stop, now) {
+function minutesBehind(day, stop, now, position) {
   if (!stop) return 0;
+  if (isArrived(position, stop)) return 0;
   const when = stopDateTime(day, stop);
   if (!when || now.getTime() <= when.getTime()) return 0;
   return Math.round((now.getTime() - when.getTime()) / 60000);
+}
+
+export function shouldLeaveNow(guide, now) {
+  const stop = guide.nextStop;
+  const when = stopDateTime(guide.viewingDay, stop);
+  if (!when) return false;
+  const until = Math.round((when.getTime() - now.getTime()) / 60000);
+  return until <= 30 && until >= 0 && (guide.nextDistanceM || 0) > 150;
+}
+
+export function heroKicker(guide, leaveNow) {
+  const base = guide.hereStop ? "You are here" : "Next up";
+  if (guide.behindMinutes > 0) return `${base} · ${guide.behindMinutes} min behind`;
+  if (leaveNow) return `${base} · leave now`;
+  return base;
 }
 
 function viewingState(days, now, peekedDayId) {
@@ -93,8 +109,9 @@ export function resolveGuide({ days, now, position, peekedDayId }) {
     isPeeking,
     hereStop,
     nextStop,
+    highlightStop: hereStop || nextStop,
     nextDistanceM: distanceTo(nextStop, position),
-    behindMinutes: minutesBehind(viewingDay, nextStop, now),
+    behindMinutes: minutesBehind(viewingDay, nextStop, now, position),
   };
 }
 
@@ -121,14 +138,11 @@ function nextStopIndex(stops, nextStop) {
 }
 
 export function listedStops(stops, nextStop, hereStop) {
-  const nextIdx = nextStopIndex(stops, nextStop);
-  const hereId = hereStop && hereStop.id;
+  const highlightIdx = nextStopIndex(stops, hereStop || nextStop);
   const listed = [];
   for (let index = 0; index < stops.length; index += 1) {
-    const stop = stops[index];
-    if (hereId && stop.id === hereId) continue;
-    const isPast = nextIdx < 0 || index < nextIdx;
-    listed.push({ stop: stop, past: isPast });
+    const isPast = highlightIdx < 0 || index < highlightIdx;
+    listed.push({ stop: stops[index], past: isPast });
   }
   return listed;
 }
