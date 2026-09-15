@@ -11,10 +11,17 @@
   <link rel="manifest" href="./manifest.json">
   <link rel="icon" href="./icon.svg">
   <link rel="apple-touch-icon" href="./icon.svg">
-  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./styles.css?v=3">
 </head>
 <body>
   <div id="app">Loading…</div>
-  <script type="module" src="./app.js"></script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker
+        .register("./sw.js", { updateViaCache: "none" })
+        .then(function (reg) { return reg.update(); });
+    }
+  </script>
+  <script type="module" src="./app.js?v=3"></script>
 </body>
 </html>

@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { isArrived, pickCalendarDay, pickTheme, remainingStops, resolveGuide } from "./logic.js";
+import { isArrived, pickCalendarDay, pickFetchBody, pickTheme, remainingStops, resolveGuide } from "./logic.js";
 
 const day0 = {
   id: "day-0",
@@ -326,6 +326,14 @@ test("pickTheme does not treat snacks as a temple", () => {
     }),
     "city"
   );
+});
+
+test("a cached page does not beat a fresh network response", () => {
+  assert.equal(pickFetchBody("fresh-css", "old-css"), "fresh-css");
+});
+
+test("offline still uses the cache when the network is empty", () => {
+  assert.equal(pickFetchBody(null, "old-css"), "old-css");
 });
 
 test("pickTheme does not keep a city stop on a forest day", () => {

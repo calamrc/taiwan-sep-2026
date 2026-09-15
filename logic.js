@@ -123,6 +123,10 @@ export function formatDistance(meters) {
   return `${(meters / 1000).toFixed(meters >= 10000 ? 0 : 1)} km`;
 }
 
+export function pickFetchBody(fresh, cached) {
+  return fresh || cached;
+}
+
 const THEME_RULES = [
   ["airport", /naia|taoyuan|flight|airport|\btpe\b|immigration|easycard/i],
   ["hotel", /mayer inn|check in|check out|\bhotel\b/i],

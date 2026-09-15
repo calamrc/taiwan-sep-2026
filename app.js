@@ -245,7 +245,9 @@ async function boot() {
     render();
   }, 30000);
   if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("./sw.js");
+    navigator.serviceWorker
+      .register("./sw.js", { updateViaCache: "none" })
+      .then((reg) => reg.update());
   }
 }
 

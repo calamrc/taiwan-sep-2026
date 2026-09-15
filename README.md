@@ -6,4 +6,4 @@ Open https://calamrc.github.io/taiwan-sep-2026/ on Wi‑Fi, then **Add to Home S
 
 Allow location so Next up can follow GPS. Deny it and it still follows the clock.
 
-The chrome restyles with the stop you are on — no theme picker. Close and reopen the app after an update so the new cache loads.
+The chrome restyles with the stop you are on — no theme picker. After an update, swipe the app away from Recents and open the link in Chrome once so the new files replace the old cache.
