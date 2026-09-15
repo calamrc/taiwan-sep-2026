@@ -412,6 +412,7 @@ h1 {
 }
 .stop .title { font-size: 15px; font-weight: 650; }
 .stop.open { border-left-color: var(--bar); }
+.stop.past { opacity: 0.45; }
 
 .block { margin-top: 10px; color: var(--muted); font-size: 13px; }
 .block.rain { color: var(--rain); }

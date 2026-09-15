@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { isArrived, pickCalendarDay, pickFetchBody, pickTheme, remainingStops, resolveGuide, screenStamp } from "./logic.js";
+import { isArrived, listedStops, pickCalendarDay, pickFetchBody, pickTheme, resolveGuide, screenStamp } from "./logic.js";
 
 const day0 = {
   id: "day-0",
@@ -177,11 +177,44 @@ test("the evening hotel pin does not steal Next up in the morning", () => {
   assert.notEqual(g.hereStop?.id, "home");
 });
 
-test("remainingStops lists only stops after the hero", () => {
-  const rest = remainingStops(day1.stops, day1.stops[0], null);
+test("listedStops keeps earlier stops as past after the clock moves on", () => {
+  const listed = listedStops(day1.stops, day1.stops[2], null);
   assert.deepEqual(
-    rest.map((stop) => stop.id),
-    ["lungshan", "ximen"]
+    listed.map((item) => [item.stop.id, item.past]),
+    [
+      ["capy", true],
+      ["lungshan", true],
+    ]
+  );
+});
+
+test("listedStops puts upcoming stops before past ones", () => {
+  const listed = listedStops(day1.stops, day1.stops[1], null);
+  assert.deepEqual(
+    listed.map((item) => [item.stop.id, item.past]),
+    [
+      ["ximen", false],
+      ["capy", true],
+    ]
+  );
+});
+
+test("listedStops skips the hero and you-are-here stops", () => {
+  const listed = listedStops(day1.stops, day1.stops[1], day1.stops[0]);
+  assert.deepEqual(
+    listed.map((item) => [item.stop.id, item.past]),
+    [["ximen", false]]
+  );
+});
+
+test("listedStops marks the rest of the day past when next is empty", () => {
+  const listed = listedStops(day1.stops, null, day1.stops[2]);
+  assert.deepEqual(
+    listed.map((item) => [item.stop.id, item.past]),
+    [
+      ["capy", true],
+      ["lungshan", true],
+    ]
   );
 });
 

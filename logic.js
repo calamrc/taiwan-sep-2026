@@ -112,9 +112,31 @@ export function mapsUrl(stop, origin) {
   return `https://www.google.com/maps/dir/?${params.toString()}`;
 }
 
-export function remainingStops(stops, nextStop, hereStop) {
-  const nextIdx = nextStop ? stops.findIndex((stop) => stop.id === nextStop.id) : -1;
-  return stops.filter((stop, index) => index > nextIdx && stop.id !== hereStop?.id);
+function nextStopIndex(stops, nextStop) {
+  if (!nextStop) return -1;
+  for (let index = 0; index < stops.length; index += 1) {
+    if (stops[index].id === nextStop.id) return index;
+  }
+  return -1;
+}
+
+export function listedStops(stops, nextStop, hereStop) {
+  const nextIdx = nextStopIndex(stops, nextStop);
+  const hereId = hereStop && hereStop.id;
+  const upcoming = [];
+  const past = [];
+  for (let index = 0; index < stops.length; index += 1) {
+    const stop = stops[index];
+    if (index === nextIdx) continue;
+    if (hereId && stop.id === hereId) continue;
+    const isPast = nextIdx < 0 || index < nextIdx;
+    if (isPast) {
+      past.push({ stop: stop, past: true });
+    } else {
+      upcoming.push({ stop: stop, past: false });
+    }
+  }
+  return upcoming.concat(past);
 }
 
 export function formatDistance(meters) {

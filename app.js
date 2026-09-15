@@ -2,7 +2,7 @@ import {
   formatDistance,
   mapsUrl,
   pickTheme,
-  remainingStops,
+  listedStops,
   resolveGuide,
   screenStamp,
 } from "./logic.js";
@@ -109,9 +109,10 @@ function stopDetail(stop) {
   return `${how}${rain}${links}`;
 }
 
-function stopCard(stop, origin, open) {
+function stopCard(stop, origin, open, past) {
   const place = [stop.place, stop.address].filter(Boolean)[0] || "";
-  return `<button class="stop ${open ? "open" : ""}" data-toggle="${stop.id}">
+  const cls = ["stop", open && "open", past && "past"].filter(Boolean).join(" ");
+  return `<button class="${cls}" data-toggle="${stop.id}">
     <div class="stop-time">${formatClock(stop.time) || "—"}</div>
     <div>
       <div class="title">${stop.title}</div>
@@ -182,7 +183,7 @@ function render() {
   if (stamp === lastStamp) return;
   lastStamp = stamp;
   applyTheme(pickTheme(guide));
-  const afterNext = remainingStops(
+  const listed = listedStops(
     guide.viewingDay.stops || [],
     guide.nextStop,
     guide.hereStop
@@ -208,7 +209,7 @@ function render() {
     <div class="days">${dayButtons(trip.days, guide.viewingDay.id)}</div>
     ${here}
     ${heroCard(guide, origin)}
-    ${afterNext.map((stop) => stopCard(stop, origin, state.openId === stop.id)).join("")}
+    ${listed.map((item) => stopCard(item.stop, origin, state.openId === item.stop.id, item.past)).join("")}
     ${extraBlock(guide.viewingDay, origin)}
   `;
 }
