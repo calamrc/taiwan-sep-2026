@@ -1,4 +1,4 @@
-export const VERSION = "9";
+export const VERSION = "10";
 const ARRIVE_RADIUS_M = 150;
 const TAIPEI_OFFSET_MS = 8 * 60 * 60 * 1000;
 
@@ -42,16 +42,37 @@ function stopDateTime(day, stop) {
   return new Date(`${day.date}T${stop.time}:00+08:00`);
 }
 
+function isTooEarly(when, now) {
+  return Boolean(when && when.getTime() - now.getTime() > 30 * 60 * 1000);
+}
+
+function hasEarlierArrival(stops, position, index) {
+  for (let i = 0; i < index; i += 1) {
+    if (isArrived(position, stops[i])) return true;
+  }
+  return false;
+}
+
+function aheadArrivedIndex(stops, position, day, now) {
+  const expectedIdx = nextStopIndex(stops, pickTimeCurrent(day, stops, now));
+  for (let i = stops.length - 1; i > expectedIdx; i -= 1) {
+    if (!isArrived(position, stops[i])) continue;
+    if (hasEarlierArrival(stops, position, i)) continue;
+    return i;
+  }
+  return -1;
+}
+
 function latestArrivedIndex(stops, position, day, now) {
+  if (!position) return -1;
   let arrivedIdx = -1;
-  if (!position) return arrivedIdx;
   for (let i = 0; i < stops.length; i += 1) {
     if (!isArrived(position, stops[i])) continue;
-    const when = stopDateTime(day, stops[i]);
-    if (when && when.getTime() - now.getTime() > 30 * 60 * 1000) continue;
+    if (isTooEarly(stopDateTime(day, stops[i]), now)) continue;
     arrivedIdx = i;
   }
-  return arrivedIdx;
+  if (arrivedIdx >= 0) return arrivedIdx;
+  return aheadArrivedIndex(stops, position, day, now);
 }
 
 function pickTimeNext(day, stops, now) {
@@ -77,11 +98,27 @@ function distanceTo(stop, position) {
 }
 
 function minutesBehind(day, stop, now, position) {
-  if (!stop) return 0;
+  if (!stop || !position) return 0;
   if (isArrived(position, stop)) return 0;
   const when = stopDateTime(day, stop);
   if (!when || now.getTime() <= when.getTime()) return 0;
   return Math.round((now.getTime() - when.getTime()) / 60000);
+}
+
+function pickHighlight(hereStop, expectedStop, nextStop, ahead) {
+  if (ahead && hereStop) return hereStop;
+  if (expectedStop && (!hereStop || hereStop.id !== expectedStop.id)) {
+    return expectedStop;
+  }
+  return hereStop || expectedStop || nextStop;
+}
+
+export function awayMeters(guide) {
+  if (!guide.highlightStop) return null;
+  if (guide.hereStop && guide.hereStop.id === guide.highlightStop.id) return null;
+  const meters = guide.highlightDistanceM;
+  if (meters == null || Number.isNaN(meters)) return null;
+  return meters;
 }
 
 export function shouldLeaveNow(guide, now) {
@@ -92,16 +129,25 @@ export function shouldLeaveNow(guide, now) {
   return until <= 30 && until >= 0 && (guide.nextDistanceM || 0) > 150;
 }
 
-export function heroKicker(guide, leaveNow) {
-  let base = "Next up";
-  if (guide.hereStop) base = "You are here";
-  else if (
+function heroBase(guide) {
+  const onHere =
+    guide.hereStop &&
     guide.highlightStop &&
-    (!guide.nextStop || guide.highlightStop.id !== guide.nextStop.id)
-  ) {
-    base = "Now";
+    guide.hereStop.id === guide.highlightStop.id;
+  if (onHere) return "You are here";
+  const currentSlot =
+    guide.behindMinutes > 0 ||
+    (guide.highlightStop &&
+      (!guide.nextStop || guide.highlightStop.id !== guide.nextStop.id));
+  return currentSlot ? "Now" : "Next up";
+}
+
+export function heroKicker(guide, leaveNow) {
+  const base = heroBase(guide);
+  if (guide.ahead) return `${base} · ahead of plan`;
+  if (guide.behindMinutes > 0) {
+    return `${base} · ${guide.behindMinutes} min behind`;
   }
-  if (guide.behindMinutes > 0) return `${base} · ${guide.behindMinutes} min behind`;
   if (leaveNow) return `${base} · leave now`;
   return base;
 }
@@ -128,16 +174,27 @@ export function resolveGuide({ days, now, position, peekedDayId }) {
   if (!hereStop) {
     nextStop = isPeeking ? stops[0] || null : pickTimeNext(viewingDay, stops, now);
   }
-  const clockCurrent = isPeeking ? null : pickTimeCurrent(viewingDay, stops, now);
+  const expectedStop = isPeeking ? null : pickTimeCurrent(viewingDay, stops, now);
+  const ahead = Boolean(
+    hereStop &&
+      expectedStop &&
+      nextStopIndex(stops, hereStop) > nextStopIndex(stops, expectedStop)
+  );
+  const highlightStop = pickHighlight(hereStop, expectedStop, nextStop, ahead);
   return {
     calendarDay,
     viewingDay,
     isPeeking,
     hereStop,
     nextStop,
-    highlightStop: hereStop || clockCurrent || nextStop,
+    expectedStop,
+    ahead,
+    highlightStop,
     nextDistanceM: distanceTo(nextStop, position),
-    behindMinutes: minutesBehind(viewingDay, nextStop, now, position),
+    highlightDistanceM: distanceTo(highlightStop, position),
+    behindMinutes: ahead
+      ? 0
+      : minutesBehind(viewingDay, expectedStop || nextStop, now, position),
   };
 }
 
@@ -199,8 +256,10 @@ export function screenStamp(guide, extra) {
     stopId(guide.viewingDay),
     stopId(guide.hereStop),
     stopId(guide.nextStop),
+    stopId(guide.highlightStop),
     stampPart(guide.isPeeking),
     stampPart(guide.behindMinutes),
+    stampPart(guide.ahead),
     pickTheme(guide),
     stampPart(extra.openId),
     stampPart(extra.geo),
@@ -232,7 +291,7 @@ function haystack(parts) {
 }
 
 export function pickTheme(guide) {
-  const stop = guide.hereStop || guide.nextStop;
+  const stop = guide.highlightStop || guide.hereStop || guide.nextStop;
   const fromTitle = matchTheme(stop?.title);
   if (fromTitle) return fromTitle;
   const fromPlace = matchTheme(haystack([stop?.place, stop?.address]));

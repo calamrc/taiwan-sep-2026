@@ -1,4 +1,5 @@
 import {
+  awayMeters,
   formatDistance,
   heroKicker,
   mapsUrl,
@@ -108,11 +109,7 @@ function stopCard(stop, origin, open, past) {
 function heroCard(guide, origin, leaveNow) {
   const stop = guide.highlightStop;
   if (!stop) return `<div class="hero"><div class="title">That's the day</div></div>`;
-  const showNextDist =
-    guide.nextStop &&
-    guide.highlightStop &&
-    guide.highlightStop.id === guide.nextStop.id;
-  const dist = showNextDist ? formatDistance(guide.nextDistanceM) : null;
+  const dist = formatDistance(awayMeters(guide));
   const placeBits = [stop.place, dist].filter(Boolean).join(" · ");
   const late = guide.behindMinutes > 0 ? " late" : "";
   const open = state.openId === stop.id ? " open" : "";

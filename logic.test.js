@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { isArrived, heroKicker, listedStops, pickCalendarDay, pickFetchBody, pickTheme, resolveGuide, screenStamp, shouldLeaveNow, statusLine } from "./logic.js";
+import { isArrived, awayMeters, heroKicker, listedStops, pickCalendarDay, pickFetchBody, pickTheme, resolveGuide, screenStamp, shouldLeaveNow, statusLine } from "./logic.js";
 
 const day0 = {
   id: "day-0",
@@ -113,7 +113,7 @@ test("still at Capybara after 11:00 does not skip ahead; Lungshan is behind", ()
   });
   assert.equal(g.hereStop.id, "capy");
   assert.equal(g.nextStop.id, "lungshan");
-  assert.equal(g.highlightStop.id, "capy");
+  assert.equal(g.highlightStop.id, "lungshan");
   assert.equal(g.behindMinutes, 25);
 });
 
@@ -127,6 +127,19 @@ test("at Lungshan after 11:00, location clears late for that stop", () => {
   assert.equal(g.highlightStop.id, "lungshan");
   assert.equal(g.nextStop.id, "ximen");
   assert.equal(g.behindMinutes, 0);
+});
+
+test("away from the clock stop is behind that stop, not the next one", () => {
+  const g = resolveGuide({
+    days,
+    now: at("2026-09-16T11:25:00+08:00"),
+    position: hotel,
+  });
+  assert.equal(g.expectedStop.id, "lungshan");
+  assert.equal(g.hereStop, null);
+  assert.equal(g.nextStop.id, "ximen");
+  assert.equal(g.highlightStop.id, "lungshan");
+  assert.equal(g.behindMinutes, 25);
 });
 
 test("without GPS, 8:50 uses the clock and picks Capybara", () => {
@@ -407,8 +420,8 @@ test("pickTheme does not treat snacks as a temple", () => {
 });
 
 test("status line shows the page version so a stale cache is obvious", () => {
-  assert.equal(statusLine("on", false), "Clock + GPS · v9");
-  assert.equal(statusLine("off", true), "Location off — clock only · peeking · v9");
+  assert.equal(statusLine("on", false), "Clock + GPS · v10");
+  assert.equal(statusLine("off", true), "Location off — clock only · peeking · v10");
 });
 
 test("a cached page does not beat a fresh network response", () => {
@@ -473,7 +486,60 @@ test("hero kicker uses location and time for behind", () => {
     now: at("2026-09-16T11:25:00+08:00"),
     position: nearCapy,
   });
-  assert.equal(heroKicker(g, false), "You are here · 25 min behind");
+  assert.equal(heroKicker(g, false), "Now · 25 min behind");
+});
+
+test("away from the clock stop shows how far it is", () => {
+  const g = resolveGuide({
+    days,
+    now: at("2026-09-16T11:25:00+08:00"),
+    position: hotel,
+  });
+  assert.ok(g.highlightDistanceM > 1000);
+  assert.equal(awayMeters(g), g.highlightDistanceM);
+});
+
+test("lingering at the previous stop shows distance to the clock stop", () => {
+  const g = resolveGuide({
+    days,
+    now: at("2026-09-16T11:25:00+08:00"),
+    position: nearCapy,
+  });
+  assert.equal(g.highlightStop.id, "lungshan");
+  assert.equal(awayMeters(g), g.highlightDistanceM);
+  assert.ok(g.highlightDistanceM > 1000);
+});
+
+test("arrived at the clock stop hides away distance", () => {
+  const g = resolveGuide({
+    days,
+    now: at("2026-09-16T10:08:00+08:00"),
+    position: nearCapy,
+  });
+  assert.equal(awayMeters(g), null);
+});
+
+test("hero kicker names the clock stop when GPS is elsewhere", () => {
+  const g = resolveGuide({
+    days,
+    now: at("2026-09-16T11:25:00+08:00"),
+    position: hotel,
+  });
+  assert.equal(heroKicker(g, false), "Now · 25 min behind");
+});
+
+test("already at a later stop is ahead of the plan, not behind on the clock stop", () => {
+  const g = resolveGuide({
+    days,
+    now: at("2026-09-16T10:30:00+08:00"),
+    position: { lat: 25.042, lng: 121.508 },
+  });
+  assert.equal(g.hereStop.id, "ximen");
+  assert.equal(g.expectedStop.id, "capy");
+  assert.equal(g.ahead, true);
+  assert.equal(g.behindMinutes, 0);
+  assert.equal(g.highlightStop.id, "ximen");
+  assert.equal(heroKicker(g, false), "You are here · ahead of plan");
 });
 
 test("hero kicker stays Next up when not arrived", () => {
