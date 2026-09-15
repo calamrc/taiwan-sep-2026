@@ -195,6 +195,15 @@ function render() {
     ? `<div class="here"><div class="pulse"></div><div><div class="kicker">You are here</div><div class="title">${guide.hereStop.title}</div></div></div>`
     : "";
   const peek = guide.isPeeking ? " · peeking" : "";
+  const nextId = guide.nextStop && guide.nextStop.id;
+  const rows = listed
+    .map((item) =>
+      item.stop.id === nextId
+        ? heroCard(guide, origin)
+        : stopCard(item.stop, origin, state.openId === item.stop.id, item.past)
+    )
+    .join("");
+  const done = nextId ? "" : heroCard(guide, origin);
 
   document.getElementById("app").innerHTML = `
     <div class="lightbar"></div>
@@ -208,8 +217,8 @@ function render() {
     <div class="status">${geoStatus()}${peek}</div>
     <div class="days">${dayButtons(trip.days, guide.viewingDay.id)}</div>
     ${here}
-    ${heroCard(guide, origin)}
-    ${listed.map((item) => stopCard(item.stop, origin, state.openId === item.stop.id, item.past)).join("")}
+    ${rows}
+    ${done}
     ${extraBlock(guide.viewingDay, origin)}
   `;
 }

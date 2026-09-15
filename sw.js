@@ -1,4 +1,4 @@
-const CACHE = "taiwan-v5";
+const CACHE = "taiwan-v6";
 const ASSETS = [
   "./",
   "./index.html",

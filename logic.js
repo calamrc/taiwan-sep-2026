@@ -123,20 +123,14 @@ function nextStopIndex(stops, nextStop) {
 export function listedStops(stops, nextStop, hereStop) {
   const nextIdx = nextStopIndex(stops, nextStop);
   const hereId = hereStop && hereStop.id;
-  const upcoming = [];
-  const past = [];
+  const listed = [];
   for (let index = 0; index < stops.length; index += 1) {
     const stop = stops[index];
-    if (index === nextIdx) continue;
     if (hereId && stop.id === hereId) continue;
     const isPast = nextIdx < 0 || index < nextIdx;
-    if (isPast) {
-      past.push({ stop: stop, past: true });
-    } else {
-      upcoming.push({ stop: stop, past: false });
-    }
+    listed.push({ stop: stop, past: isPast });
   }
-  return upcoming.concat(past);
+  return listed;
 }
 
 export function formatDistance(meters) {

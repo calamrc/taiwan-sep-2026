@@ -184,26 +184,31 @@ test("listedStops keeps earlier stops as past after the clock moves on", () => {
     [
       ["capy", true],
       ["lungshan", true],
+      ["ximen", false],
     ]
   );
 });
 
-test("listedStops puts upcoming stops before past ones", () => {
+test("listedStops keeps itinerary order around the next stop", () => {
   const listed = listedStops(day1.stops, day1.stops[1], null);
   assert.deepEqual(
     listed.map((item) => [item.stop.id, item.past]),
     [
-      ["ximen", false],
       ["capy", true],
+      ["lungshan", false],
+      ["ximen", false],
     ]
   );
 });
 
-test("listedStops skips the hero and you-are-here stops", () => {
+test("listedStops skips you-are-here and keeps the next stop in order", () => {
   const listed = listedStops(day1.stops, day1.stops[1], day1.stops[0]);
   assert.deepEqual(
     listed.map((item) => [item.stop.id, item.past]),
-    [["ximen", false]]
+    [
+      ["lungshan", false],
+      ["ximen", false],
+    ]
   );
 });
 
