@@ -108,7 +108,11 @@ function stopCard(stop, origin, open, past) {
 function heroCard(guide, origin, leaveNow) {
   const stop = guide.highlightStop;
   if (!stop) return `<div class="hero"><div class="title">That's the day</div></div>`;
-  const dist = guide.hereStop ? null : formatDistance(guide.nextDistanceM);
+  const showNextDist =
+    guide.nextStop &&
+    guide.highlightStop &&
+    guide.highlightStop.id === guide.nextStop.id;
+  const dist = showNextDist ? formatDistance(guide.nextDistanceM) : null;
   const placeBits = [stop.place, dist].filter(Boolean).join(" · ");
   const late = guide.behindMinutes > 0 ? " late" : "";
   const open = state.openId === stop.id ? " open" : "";
@@ -161,11 +165,7 @@ function render() {
   if (stamp === lastStamp) return;
   lastStamp = stamp;
   applyTheme(pickTheme(guide));
-  const listed = listedStops(
-    guide.viewingDay.stops || [],
-    guide.nextStop,
-    guide.hereStop
-  );
+  const listed = listedStops(guide.viewingDay.stops || [], guide.highlightStop);
   const hotel = showHotel(trip, now)
     ? `<a class="hotel" href="${mapsUrl(trip.hotel, origin)}">Hotel</a>`
     : "";

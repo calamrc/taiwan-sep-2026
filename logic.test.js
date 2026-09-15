@@ -137,15 +137,38 @@ test("without GPS, 8:50 uses the clock and picks Capybara", () => {
   });
   assert.equal(g.hereStop, null);
   assert.equal(g.nextStop.id, "capy");
+  assert.equal(g.highlightStop.id, "capy");
 });
 
-test("without GPS after 11:00, the clock moves to the first unpassed stop", () => {
+test("without GPS after 11:00, the clock stays on the started stop", () => {
   const g = resolveGuide({
     days,
     now: at("2026-09-16T11:25:00+08:00"),
     position: null,
   });
+  assert.equal(g.highlightStop.id, "lungshan");
   assert.equal(g.nextStop.id, "ximen");
+});
+
+test("at 4:41 the hero is check-in rest, not breakfast at 8", () => {
+  const day = {
+    id: "day-1",
+    date: "2026-09-16",
+    stops: [
+      { id: "checkin", time: "04:00", title: "Check in · rest" },
+      { id: "breakfast", time: "08:00", title: "Breakfast" },
+      { id: "capy", time: "09:00", title: "Capybara" },
+    ],
+  };
+  const g = resolveGuide({
+    days: [day],
+    now: at("2026-09-16T04:41:00+08:00"),
+    position: null,
+  });
+  assert.equal(g.highlightStop.id, "checkin");
+  assert.equal(g.nextStop.id, "breakfast");
+  assert.equal(g.behindMinutes, 0);
+  assert.equal(heroKicker(g, false), "Now");
 });
 
 test("peeking another day does not apply GPS from today", () => {
@@ -193,7 +216,7 @@ test("the evening hotel pin does not steal Next up in the morning", () => {
 });
 
 test("listedStops keeps earlier stops as past after the clock moves on", () => {
-  const listed = listedStops(day1.stops, day1.stops[2], null);
+  const listed = listedStops(day1.stops, day1.stops[2]);
   assert.deepEqual(
     listed.map((item) => [item.stop.id, item.past]),
     [
@@ -205,7 +228,7 @@ test("listedStops keeps earlier stops as past after the clock moves on", () => {
 });
 
 test("listedStops keeps itinerary order around the next stop", () => {
-  const listed = listedStops(day1.stops, day1.stops[1], null);
+  const listed = listedStops(day1.stops, day1.stops[1]);
   assert.deepEqual(
     listed.map((item) => [item.stop.id, item.past]),
     [
@@ -217,7 +240,7 @@ test("listedStops keeps itinerary order around the next stop", () => {
 });
 
 test("listedStops keeps you-are-here as the current highlight", () => {
-  const listed = listedStops(day1.stops, day1.stops[1], day1.stops[0]);
+  const listed = listedStops(day1.stops, day1.stops[0]);
   assert.deepEqual(
     listed.map((item) => [item.stop.id, item.past]),
     [
@@ -229,7 +252,7 @@ test("listedStops keeps you-are-here as the current highlight", () => {
 });
 
 test("listedStops marks earlier stops past when the last stop is current", () => {
-  const listed = listedStops(day1.stops, null, day1.stops[2]);
+  const listed = listedStops(day1.stops, day1.stops[2]);
   assert.deepEqual(
     listed.map((item) => [item.stop.id, item.past]),
     [
@@ -384,8 +407,8 @@ test("pickTheme does not treat snacks as a temple", () => {
 });
 
 test("status line shows the page version so a stale cache is obvious", () => {
-  assert.equal(statusLine("on", false), "Clock + GPS · v8");
-  assert.equal(statusLine("off", true), "Location off — clock only · peeking · v8");
+  assert.equal(statusLine("on", false), "Clock + GPS · v9");
+  assert.equal(statusLine("off", true), "Location off — clock only · peeking · v9");
 });
 
 test("a cached page does not beat a fresh network response", () => {

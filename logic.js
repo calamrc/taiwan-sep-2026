@@ -1,4 +1,4 @@
-export const VERSION = "8";
+export const VERSION = "9";
 const ARRIVE_RADIUS_M = 150;
 const TAIPEI_OFFSET_MS = 8 * 60 * 60 * 1000;
 
@@ -62,6 +62,15 @@ function pickTimeNext(day, stops, now) {
   return upcoming || stops[stops.length - 1] || null;
 }
 
+function pickTimeCurrent(day, stops, now) {
+  let current = null;
+  for (let i = 0; i < stops.length; i += 1) {
+    const when = stopDateTime(day, stops[i]);
+    if (when && when.getTime() <= now.getTime()) current = stops[i];
+  }
+  return current;
+}
+
 function distanceTo(stop, position) {
   if (!stop || !position || stop.lat == null || stop.lng == null) return null;
   return distanceMeters(position, { lat: stop.lat, lng: stop.lng });
@@ -84,7 +93,14 @@ export function shouldLeaveNow(guide, now) {
 }
 
 export function heroKicker(guide, leaveNow) {
-  const base = guide.hereStop ? "You are here" : "Next up";
+  let base = "Next up";
+  if (guide.hereStop) base = "You are here";
+  else if (
+    guide.highlightStop &&
+    (!guide.nextStop || guide.highlightStop.id !== guide.nextStop.id)
+  ) {
+    base = "Now";
+  }
   if (guide.behindMinutes > 0) return `${base} · ${guide.behindMinutes} min behind`;
   if (leaveNow) return `${base} · leave now`;
   return base;
@@ -112,13 +128,14 @@ export function resolveGuide({ days, now, position, peekedDayId }) {
   if (!hereStop) {
     nextStop = isPeeking ? stops[0] || null : pickTimeNext(viewingDay, stops, now);
   }
+  const clockCurrent = isPeeking ? null : pickTimeCurrent(viewingDay, stops, now);
   return {
     calendarDay,
     viewingDay,
     isPeeking,
     hereStop,
     nextStop,
-    highlightStop: hereStop || nextStop,
+    highlightStop: hereStop || clockCurrent || nextStop,
     nextDistanceM: distanceTo(nextStop, position),
     behindMinutes: minutesBehind(viewingDay, nextStop, now, position),
   };
@@ -146,8 +163,8 @@ function nextStopIndex(stops, nextStop) {
   return -1;
 }
 
-export function listedStops(stops, nextStop, hereStop) {
-  const highlightIdx = nextStopIndex(stops, hereStop || nextStop);
+export function listedStops(stops, highlightStop) {
+  const highlightIdx = nextStopIndex(stops, highlightStop);
   const listed = [];
   for (let index = 0; index < stops.length; index += 1) {
     const isPast = highlightIdx < 0 || index < highlightIdx;
