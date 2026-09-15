@@ -127,6 +127,32 @@ export function pickFetchBody(fresh, cached) {
   return fresh || cached;
 }
 
+function stopId(stop) {
+  return stop && stop.id ? stop.id : "";
+}
+
+function stampPart(value) {
+  if (value == null || value === false) return "";
+  if (value === true) return "1";
+  return String(value);
+}
+
+export function screenStamp(guide, extra) {
+  extra = extra || {};
+  return [
+    stopId(guide.viewingDay),
+    stopId(guide.hereStop),
+    stopId(guide.nextStop),
+    stampPart(guide.isPeeking),
+    stampPart(guide.behindMinutes),
+    pickTheme(guide),
+    stampPart(extra.openId),
+    stampPart(extra.geo),
+    stampPart(extra.hotel),
+    stampPart(extra.leaveNow),
+  ].join("|");
+}
+
 const THEME_RULES = [
   ["airport", /naia|taoyuan|flight|airport|\btpe\b|immigration|easycard/i],
   ["hotel", /mayer inn|check in|check out|\bhotel\b/i],

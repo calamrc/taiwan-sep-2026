@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { isArrived, pickCalendarDay, pickFetchBody, pickTheme, remainingStops, resolveGuide } from "./logic.js";
+import { isArrived, pickCalendarDay, pickFetchBody, pickTheme, remainingStops, resolveGuide, screenStamp } from "./logic.js";
 
 const day0 = {
   id: "day-0",
@@ -334,6 +334,45 @@ test("a cached page does not beat a fresh network response", () => {
 
 test("offline still uses the cache when the network is empty", () => {
   assert.equal(pickFetchBody(null, "old-css"), "old-css");
+});
+
+test("GPS jitter at the same stop keeps the same screen stamp", () => {
+  const now = at("2026-09-16T10:08:00+08:00");
+  const here = resolveGuide({ days, now, position: nearCapy });
+  const jitter = resolveGuide({
+    days,
+    now,
+    position: { lat: nearCapy.lat + 0.0001, lng: nearCapy.lng },
+  });
+  assert.equal(here.hereStop.id, "capy");
+  assert.equal(jitter.hereStop.id, "capy");
+  assert.notEqual(here.nextDistanceM, jitter.nextDistanceM);
+  assert.equal(screenStamp(here), screenStamp(jitter));
+});
+
+test("crossing the arrive radius changes the screen stamp", () => {
+  const now = at("2026-09-16T10:08:00+08:00");
+  const here = resolveGuide({ days, now, position: nearCapy });
+  const away = resolveGuide({ days, now, position: farFromCapy });
+  assert.equal(here.hereStop.id, "capy");
+  assert.equal(away.hereStop, null);
+  assert.notEqual(screenStamp(here), screenStamp(away));
+});
+
+test("open stop and geo status are part of the screen stamp", () => {
+  const guide = resolveGuide({
+    days,
+    now: at("2026-09-16T10:08:00+08:00"),
+    position: nearCapy,
+  });
+  assert.notEqual(
+    screenStamp(guide, { openId: "capy", geo: "on" }),
+    screenStamp(guide, { openId: null, geo: "on" })
+  );
+  assert.notEqual(
+    screenStamp(guide, { openId: "capy", geo: "on" }),
+    screenStamp(guide, { openId: "capy", geo: "off" })
+  );
 });
 
 test("pickTheme does not keep a city stop on a forest day", () => {

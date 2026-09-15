@@ -4,6 +4,7 @@ import {
   pickTheme,
   remainingStops,
   resolveGuide,
+  screenStamp,
 } from "./logic.js";
 
 const THEME_BG = {
@@ -27,6 +28,8 @@ const state = {
   openId: null,
   geo: "asking",
 };
+
+let lastStamp = null;
 
 function formatClock(hhmm) {
   if (!hhmm) return "";
@@ -167,6 +170,17 @@ function render() {
   const { trip, now, position, peekedDayId } = state;
   const guide = resolveGuide({ days: trip.days, now, position, peekedDayId });
   const origin = position;
+  const until = minutesUntil(guide.viewingDay, guide.nextStop, now);
+  const leaveNow =
+    until != null && until <= 30 && until >= 0 && (guide.nextDistanceM || 0) > 150;
+  const stamp = screenStamp(guide, {
+    openId: state.openId,
+    geo: state.geo,
+    hotel: showHotel(trip, now),
+    leaveNow,
+  });
+  if (stamp === lastStamp) return;
+  lastStamp = stamp;
   applyTheme(pickTheme(guide));
   const afterNext = remainingStops(
     guide.viewingDay.stops || [],
