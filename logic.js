@@ -1,5 +1,14 @@
+export const VERSION = "8";
 const ARRIVE_RADIUS_M = 150;
 const TAIPEI_OFFSET_MS = 8 * 60 * 60 * 1000;
+
+export function statusLine(geo, isPeeking) {
+  let loc = "Waiting for location";
+  if (geo === "off") loc = "Location off — clock only";
+  if (geo === "on") loc = "Clock + GPS";
+  const peek = isPeeking ? " · peeking" : "";
+  return `${loc}${peek} · v${VERSION}`;
+}
 
 export function distanceMeters(a, b) {
   const earthM = 6371000;

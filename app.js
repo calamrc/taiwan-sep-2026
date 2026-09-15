@@ -7,6 +7,7 @@ import {
   resolveGuide,
   screenStamp,
   shouldLeaveNow,
+  statusLine,
 } from "./logic.js";
 
 const THEME_BG = {
@@ -43,12 +44,6 @@ function formatClock(hhmm) {
 
 function showHotel(trip, now) {
   return now.getTime() < new Date(trip.hotel.until).getTime();
-}
-
-function geoStatus() {
-  if (state.geo === "off") return "Location off — clock only";
-  if (state.geo === "on") return "Clock + GPS";
-  return "Waiting for location";
 }
 
 function applyTheme(theme) {
@@ -174,7 +169,6 @@ function render() {
   const hotel = showHotel(trip, now)
     ? `<a class="hotel" href="${mapsUrl(trip.hotel, origin)}">Hotel</a>`
     : "";
-  const peek = guide.isPeeking ? " · peeking" : "";
   const highlightId = guide.highlightStop && guide.highlightStop.id;
   const rows = listed
     .map((item) =>
@@ -194,7 +188,7 @@ function render() {
       </div>
       ${hotel}
     </div>
-    <div class="status">${geoStatus()}${peek}</div>
+    <div class="status">${statusLine(state.geo, guide.isPeeking)}</div>
     <div class="days">${dayButtons(trip.days, guide.viewingDay.id)}</div>
     ${rows}
     ${done}

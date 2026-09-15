@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { isArrived, heroKicker, listedStops, pickCalendarDay, pickFetchBody, pickTheme, resolveGuide, screenStamp, shouldLeaveNow } from "./logic.js";
+import { isArrived, heroKicker, listedStops, pickCalendarDay, pickFetchBody, pickTheme, resolveGuide, screenStamp, shouldLeaveNow, statusLine } from "./logic.js";
 
 const day0 = {
   id: "day-0",
@@ -381,6 +381,11 @@ test("pickTheme does not treat snacks as a temple", () => {
     }),
     "city"
   );
+});
+
+test("status line shows the page version so a stale cache is obvious", () => {
+  assert.equal(statusLine("on", false), "Clock + GPS · v8");
+  assert.equal(statusLine("off", true), "Location off — clock only · peeking · v8");
 });
 
 test("a cached page does not beat a fresh network response", () => {
