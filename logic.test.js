@@ -1,0 +1,186 @@
+import { test } from "node:test";
+import assert from "node:assert/strict";
+import { isArrived, pickCalendarDay, remainingStops, resolveGuide } from "./logic.js";
+
+const day0 = {
+  id: "day-0",
+  date: "2026-09-15",
+  label: "Day 0",
+  title: "Fly out",
+  stops: [
+    { id: "airport", time: "19:00", title: "Travel to airport" },
+    { id: "flight", time: "23:35", title: "Flight to Taiwan" },
+  ],
+};
+
+const day1 = {
+  id: "day-1",
+  date: "2026-09-16",
+  label: "Day 1",
+  title: "Arrival",
+  stops: [
+    {
+      id: "capy",
+      time: "09:00",
+      title: "Capybara Knight Cafe",
+      place: "Tucheng",
+      lat: 25.0,
+      lng: 121.0,
+    },
+    {
+      id: "lungshan",
+      time: "11:00",
+      title: "Lungshan Temple",
+      place: "Wanhua",
+      lat: 25.04,
+      lng: 121.5,
+    },
+    {
+      id: "ximen",
+      time: "11:45",
+      title: "Ximending",
+      place: "Rainbow Road",
+      lat: 25.042,
+      lng: 121.508,
+    },
+  ],
+};
+
+const day4 = {
+  id: "day-4",
+  date: "2026-09-19",
+  label: "Day 4",
+  title: "Taichung",
+  stops: [{ id: "hsr", time: "07:00", title: "Ride HSR to Taichung" }],
+};
+
+const days = [day0, day1, day4];
+const capy = day1.stops[0];
+const nearCapy = { lat: 25.00045, lng: 121.0 };
+const farFromCapy = { lat: 25.0018, lng: 121.0 };
+const hotel = { lat: 25.046, lng: 121.517 };
+
+function at(iso) {
+  return new Date(iso);
+}
+
+test("isArrived is true within 150 m of a stop", () => {
+  assert.equal(isArrived(nearCapy, capy), true);
+});
+
+test("isArrived is false beyond 150 m", () => {
+  assert.equal(isArrived(farFromCapy, capy), false);
+});
+
+test("isArrived is false when the stop has no coordinates", () => {
+  assert.equal(isArrived(nearCapy, { title: "Wake up" }), false);
+});
+
+test("pickCalendarDay follows the phone date in UTC+8", () => {
+  const day = pickCalendarDay(days, at("2026-09-16T08:50:00+08:00"));
+  assert.equal(day.id, "day-1");
+});
+
+test("at the hotel before 9:00, next up is Capybara and here is empty", () => {
+  const g = resolveGuide({
+    days,
+    now: at("2026-09-16T08:50:00+08:00"),
+    position: hotel,
+  });
+  assert.equal(g.hereStop, null);
+  assert.equal(g.nextStop.id, "capy");
+  assert.equal(g.behindMinutes, 0);
+  assert.ok(g.nextDistanceM > 1000);
+});
+
+test("within 150 m of Capybara, that stop becomes you-are-here and Lungshan is next", () => {
+  const g = resolveGuide({
+    days,
+    now: at("2026-09-16T10:08:00+08:00"),
+    position: nearCapy,
+  });
+  assert.equal(g.hereStop.id, "capy");
+  assert.equal(g.nextStop.id, "lungshan");
+});
+
+test("still at Capybara after 11:00 does not skip ahead; Lungshan is behind", () => {
+  const g = resolveGuide({
+    days,
+    now: at("2026-09-16T11:25:00+08:00"),
+    position: nearCapy,
+  });
+  assert.equal(g.hereStop.id, "capy");
+  assert.equal(g.nextStop.id, "lungshan");
+  assert.equal(g.behindMinutes, 25);
+});
+
+test("without GPS, 8:50 uses the clock and picks Capybara", () => {
+  const g = resolveGuide({
+    days,
+    now: at("2026-09-16T08:50:00+08:00"),
+    position: null,
+  });
+  assert.equal(g.hereStop, null);
+  assert.equal(g.nextStop.id, "capy");
+});
+
+test("without GPS after 11:00, the clock moves to the first unpassed stop", () => {
+  const g = resolveGuide({
+    days,
+    now: at("2026-09-16T11:25:00+08:00"),
+    position: null,
+  });
+  assert.equal(g.nextStop.id, "ximen");
+});
+
+test("peeking another day does not apply GPS from today", () => {
+  const g = resolveGuide({
+    days,
+    now: at("2026-09-16T10:08:00+08:00"),
+    position: nearCapy,
+    peekedDayId: "day-4",
+  });
+  assert.equal(g.isPeeking, true);
+  assert.equal(g.viewingDay.id, "day-4");
+  assert.equal(g.hereStop, null);
+  assert.equal(g.nextStop.id, "hsr");
+});
+
+test("peeking a past day still opens on that day's first stop", () => {
+  const g = resolveGuide({
+    days,
+    now: at("2026-09-16T10:08:00+08:00"),
+    position: nearCapy,
+    peekedDayId: "day-0",
+  });
+  assert.equal(g.isPeeking, true);
+  assert.equal(g.nextStop.id, "airport");
+});
+
+test("the evening hotel pin does not steal Next up in the morning", () => {
+  const pin = { lat: 25.046, lng: 121.517 };
+  const day = {
+    id: "day-x",
+    date: "2026-09-16",
+    stops: [
+      { id: "checkin", time: "04:00", title: "Check in", ...pin },
+      { id: "capy", time: "09:00", title: "Capybara", lat: 25.0, lng: 121.0 },
+      { id: "home", time: "22:30", title: "Back to hotel", ...pin },
+    ],
+  };
+  const g = resolveGuide({
+    days: [day],
+    now: at("2026-09-16T08:50:00+08:00"),
+    position: pin,
+  });
+  assert.equal(g.nextStop.id, "capy");
+  assert.notEqual(g.hereStop?.id, "home");
+});
+
+test("remainingStops lists only stops after the hero", () => {
+  const rest = remainingStops(day1.stops, day1.stops[0], null);
+  assert.deepEqual(
+    rest.map((stop) => stop.id),
+    ["lungshan", "ximen"]
+  );
+});

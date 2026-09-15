@@ -1,0 +1,1277 @@
+{
+  "title": "Taiwan",
+  "subtitle": "Sep 16–22, 2026",
+  "people": [
+    "Sean",
+    "Jang",
+    "Luna",
+    "Van",
+    "RC"
+  ],
+  "hotel": {
+    "name": "Mayer Inn",
+    "address": "50 Section 1, Zhongxiao West Road, 5F, Zhongzheng District, Taipei",
+    "mapsQuery": "Mayer Inn Taipei Main Station",
+    "until": "2026-09-21T08:00:00+08:00",
+    "lat": 25.0478,
+    "lng": 121.517
+  },
+  "days": [
+    {
+      "id": "day-0",
+      "date": "2026-09-15",
+      "weekday": "Tuesday",
+      "label": "Day 0",
+      "title": "Fly out",
+      "overview": "NAIA T3 · overnight flight",
+      "stops": [
+        {
+          "id": "d0-t3",
+          "time": "19:00",
+          "title": "Travel to airport (RC & Van)",
+          "place": "NAIA T3",
+          "mapsQuery": "NAIA Terminal 3",
+          "transit": [
+            "Travel declaration (eGov) — 48 hours before departure",
+            "Taiwan arrival card: twac.immigration.gov.tw",
+            "Buy eSIM online",
+            "Meet Besas family at T3"
+          ],
+          "links": [
+            "https://twac.immigration.gov.tw"
+          ],
+          "lat": 14.5192261,
+          "lng": 121.0137547
+        },
+        {
+          "id": "d0-checkin",
+          "time": "20:30",
+          "title": "Check in luggage · immigration",
+          "place": "NAIA T3",
+          "mapsQuery": "NAIA Terminal 3",
+          "transit": [
+            "Online check-in c/o Sean",
+            "Use e-gates for immigration when allowed"
+          ],
+          "lat": 14.5192261,
+          "lng": 121.0137547
+        },
+        {
+          "id": "d0-flight",
+          "time": "23:35",
+          "title": "Flight to Taiwan",
+          "place": "NAIA T3",
+          "mapsQuery": "NAIA Terminal 3",
+          "transit": [
+            "Rest and sleep"
+          ],
+          "lat": 14.5192261,
+          "lng": 121.0137547
+        }
+      ],
+      "extras": []
+    },
+    {
+      "id": "day-1",
+      "date": "2026-09-16",
+      "weekday": "Wednesday",
+      "label": "Day 1",
+      "title": "Arrival",
+      "overview": "Arrival · Ximending · Taipei 101 · CKS Hall",
+      "stops": [
+        {
+          "id": "d1-arrive",
+          "time": "02:00",
+          "title": "Arrive in Taiwan",
+          "place": "Taoyuan International Airport",
+          "mapsQuery": "Taoyuan International Airport Terminal 1",
+          "transit": [
+            "Wait for luggage"
+          ],
+          "lat": 25.0793,
+          "lng": 121.2346
+        },
+        {
+          "id": "d1-easycard",
+          "time": "02:30",
+          "title": "EasyCard and bus tickets",
+          "place": "Taoyuan International Airport",
+          "mapsQuery": "Taoyuan International Airport 7-Eleven",
+          "transit": [
+            "Withdraw cash at Bank of China (right from exit) via GCash or MariBank",
+            "Escalator to B1 for 7-Eleven",
+            "Buy EasyCard at 7-Eleven and load at the counter",
+            "Buy bus tickets with EasyCard"
+          ],
+          "lat": 25.0793,
+          "lng": 121.2346
+        },
+        {
+          "id": "d1-bus",
+          "time": "03:00",
+          "title": "Bus to the hotel",
+          "place": "Bus 1819 · Taipei Main Station",
+          "mapsQuery": "Taoyuan Airport Bus 1819 Taipei Main Station",
+          "price": "$140",
+          "transit": [
+            "Bus terminal area",
+            "Ride bus 1819 to Taipei Main Station (~1 hr)",
+            "Use EXIT Z2"
+          ],
+          "lat": 25.077,
+          "lng": 121.232
+        },
+        {
+          "id": "d1-checkin",
+          "time": "04:00",
+          "title": "Check in · rest",
+          "place": "Mayer Inn",
+          "address": "50 Section 1, Zhongxiao West Road, 5F, Zhongzheng District, Taipei",
+          "mapsQuery": "Mayer Inn Taipei",
+          "transit": [
+            "Nap",
+            "Freshen up"
+          ],
+          "lat": 25.0478,
+          "lng": 121.517
+        },
+        {
+          "id": "d1-breakfast",
+          "time": "08:00",
+          "title": "Breakfast",
+          "place": "7-Eleven or nearby stalls",
+          "mapsQuery": "7-Eleven Taipei Main Station",
+          "transit": [
+            "Buy food and take out"
+          ],
+          "lat": 25.0478,
+          "lng": 121.517
+        },
+        {
+          "id": "d1-capy",
+          "time": "09:00",
+          "title": "Capybara Knight Cafe",
+          "place": "Tucheng",
+          "address": "No. 18, Alley 2, Lane 61, Yuanlin Street, Tucheng District, New Taipei City",
+          "mapsQuery": "Capybara Knight Cafe Tucheng",
+          "price": "$150",
+          "booked": "Booked 10:00",
+          "transit": [
+            "No eating or drinking in MRT stations",
+            "Blue Bannan line toward Dingpu to Tucheng, Exit 1",
+            "Photo at Guangchenyan Temple",
+            "Walk past 7-Eleven, turn left before McDonald's"
+          ],
+          "rainy": "Mostly indoor. Or skip and do indoor Ximending shops.",
+          "links": [
+            "https://reserve.oddle.me/en_TW/capybaraknight/5289431/53616c7465645f5fe28c8ac33ae94a7fa3f31f1ba83a5c76276eda4d135de1d6f6e9163ccf2089de1e992222ff11a34f336bbc9e14a63e1b1772451239f05d56ba4c56ae42502ae65cdb067521ab59f4"
+          ],
+          "lat": 24.9739,
+          "lng": 121.4423
+        },
+        {
+          "id": "d1-lungshan",
+          "time": "11:00",
+          "title": "Lungshan Temple",
+          "place": "Wanhua",
+          "address": "No. 211, Guangzhou St, Wanhua District, Taipei City",
+          "mapsQuery": "Lungshan Temple Taipei",
+          "transit": [
+            "Walk to Tucheng MRT",
+            "Bannan line toward Taipei Nangang Exhibition Center to Longshan Temple",
+            "Exit 1 · walk 6 min",
+            "Enter through Dragon Gate, exit through Tiger Gate",
+            "No pointing at statues"
+          ],
+          "rainy": "Covered courtyards and indoor halls are fine. Or nearby indoor markets.",
+          "lat": 25.0372498,
+          "lng": 121.4998803
+        },
+        {
+          "id": "d1-ximen",
+          "time": "11:45",
+          "title": "Ximending",
+          "place": "Rainbow Road · The Red House",
+          "address": "No. 116, Hanzhong St, Wanhua District, Taipei City",
+          "mapsQuery": "Ximending Rainbow Road",
+          "transit": [
+            "Blue Bannan line toward Taipei Nangang Exhibition Center to Ximen",
+            "Walk 3 min"
+          ],
+          "rainy": "Excellent rainy area — Red House, Wannian Building, Donki, indoor shopping and arcades.",
+          "lat": 25.0424,
+          "lng": 121.5081
+        },
+        {
+          "id": "d1-lunch",
+          "time": "12:15",
+          "title": "Lunch: Lao Shan Dong or Gan Mei Alley",
+          "place": "Ximending",
+          "address": "B1 No. 70, Xining Rd, Wanhua District, Taipei City",
+          "mapsQuery": "Lao Shan Dong Homemade Noodles Ximending",
+          "price": "$200–300",
+          "transit": [
+            "Walk ~5 min from Ximen MRT"
+          ],
+          "rainy": "Indoor restaurants — no issue.",
+          "lat": 25.0426,
+          "lng": 121.5069
+        },
+        {
+          "id": "d1-dessert",
+          "time": "13:30",
+          "title": "Dessert then window shop",
+          "place": "Xin Fu Tang · Don Don Donki",
+          "address": "No. 101, Hanzhong St, Wanhua District, Taipei City",
+          "mapsQuery": "Xin Fu Tang Ximending",
+          "transit": [
+            "Walkable around Ximen"
+          ],
+          "rainy": "All indoor shops.",
+          "lat": 25.0297204,
+          "lng": 121.5058582
+        },
+        {
+          "id": "d1-cks",
+          "time": "15:00",
+          "title": "CKS Memorial Hall · Hang Zhou XLB",
+          "place": "Zhongzheng · Da'an",
+          "address": "Chiang Kai-shek Memorial Hall, Taipei",
+          "mapsQuery": "Chiang Kai-shek Memorial Hall",
+          "transit": [
+            "Walk to Ximen station",
+            "Green Songshan–Xindian line toward Xindian to Chiang Kai-Shek Memorial Hall, Exit 5",
+            "Walk 8 min",
+            "Hang Zhou Xiao Long Bao is a 5 min walk from CKS"
+          ],
+          "rainy": "Indoor museum and cafes. Nearby Nanmen Market is fully indoor.",
+          "lat": 25.0345759,
+          "lng": 121.5217812
+        },
+        {
+          "id": "d1-101",
+          "time": "16:00",
+          "title": "Picture with Taipei 101",
+          "place": "Taipei City Hall",
+          "address": "No. 1, City Hall Rd, Xinyi District, Taipei City",
+          "mapsQuery": "Taipei City Hall MRT Exit 2",
+          "transit": [
+            "Walk to Ren'ai Shaoxing St intersection",
+            "Ride Ren'ai Main Line weekdays toward Nangang Garden Community 2, 14 stops",
+            "Stop at Taipei City Hall, Exit 2"
+          ],
+          "rainy": "Stay in the indoor mall. Observatory views may be limited by clouds.",
+          "lat": 25.0413,
+          "lng": 121.5657
+        },
+        {
+          "id": "d1-ningxia",
+          "time": "19:00",
+          "title": "Ningxia Night Market",
+          "place": "Datong",
+          "address": "Ningxia Rd, Datong District, Taipei City",
+          "mapsQuery": "Ningxia Night Market",
+          "transit": [
+            "Walk 7 min to Taipei WTC",
+            "Red Tamsui–Xinyi line toward Tamsui to Shuanglian, 9 stops",
+            "Walk 11 min"
+          ],
+          "rainy": "Many covered stalls. Or stay longer at 101 food court / hotel restaurants.",
+          "lat": 25.0561876,
+          "lng": 121.515222
+        },
+        {
+          "id": "d1-hotel",
+          "time": "22:30",
+          "title": "Back to hotel",
+          "place": "Mayer Inn",
+          "mapsQuery": "Mayer Inn Taipei",
+          "transit": [
+            "Walk 12 min to Shuanglian",
+            "Tamsui–Xinyi line toward Daan to Taipei Main Station, 2 stops",
+            "Walk 3 min"
+          ],
+          "lat": 25.0478,
+          "lng": 121.517
+        }
+      ],
+      "extras": [
+        {
+          "title": "Hello Kitty 7-Eleven",
+          "place": "Ximending",
+          "mapsQuery": "Hello Kitty 7-Eleven Hankou Street Taipei",
+          "note": "Hankou St Sec 2",
+          "lat": 25.0456,
+          "lng": 121.5103
+        },
+        {
+          "title": "Open Chan",
+          "place": "Ximending",
+          "mapsQuery": "Open Chan Changsha Street Taipei",
+          "note": "Near Hello Kitty 7-11",
+          "lat": 25.0412,
+          "lng": 121.5055
+        },
+        {
+          "title": "Mofusand",
+          "place": "near hotel",
+          "mapsQuery": "Mofusand Kaifeng Street Taipei",
+          "note": "Kaifeng St, Zhongzheng",
+          "lat": 25.0462,
+          "lng": 121.5124
+        },
+        {
+          "title": "Peanuts",
+          "place": "near Main Station",
+          "mapsQuery": "Peanuts Hankou Street Taipei",
+          "note": "Hankou St Sec 1",
+          "lat": 25.046,
+          "lng": 121.5138
+        },
+        {
+          "title": "L'Atelier Lotus",
+          "place": "Yongkang",
+          "mapsQuery": "L'Atelier Lotus Yongkang Street",
+          "note": "Nougat · after Hang Zhou XLB · cash · queues",
+          "lat": 25.0331,
+          "lng": 121.5294
+        },
+        {
+          "title": "Bugcat Capoo 7-Eleven",
+          "place": "City Hall",
+          "mapsQuery": "Bugcat Capoo 7-Eleven Keelung Road Taipei",
+          "note": "While at Taipei 101",
+          "lat": 25.0408,
+          "lng": 121.565
+        },
+        {
+          "title": "Elephant Mountain",
+          "place": "Xinyi",
+          "mapsQuery": "Elephant Mountain Trail Taipei",
+          "note": "Optional 30 min stair climb · skip if tired",
+          "lat": 25.027,
+          "lng": 121.5718
+        }
+      ]
+    },
+    {
+      "id": "day-2",
+      "date": "2026-09-17",
+      "weekday": "Thursday",
+      "label": "Day 2",
+      "title": "Maokong & Zoo",
+      "overview": "Maokong Gondola · Taipei Zoo",
+      "stops": [
+        {
+          "id": "d2-wake",
+          "time": "05:30",
+          "title": "Wake up and prepare",
+          "maps": false
+        },
+        {
+          "id": "d2-fuhang",
+          "time": "06:30",
+          "title": "Fu Hang Soy Milk",
+          "place": "Huashan Market 2F",
+          "address": "No. 108, Section 1, Zhongxiao East Road, Zhongzheng District, Taipei",
+          "mapsQuery": "Fu Hang Soy Milk",
+          "price": "$100–200",
+          "transit": [
+            "Walk 15 min from Mayer Inn, or",
+            "Taipei Main → Blue Bannan 1 stop to Shandao Temple · walk 3 min"
+          ],
+          "lat": 25.0446,
+          "lng": 121.5235
+        },
+        {
+          "id": "d2-zoo-travel",
+          "time": "07:30",
+          "title": "Travel to Maokong Gondola",
+          "place": "Taipei Zoo",
+          "address": "No. 32, Section 2, Xinguang Rd, Wenshan District, Taipei",
+          "mapsQuery": "Taipei Zoo MRT",
+          "transit": [
+            "Walk 3 min to Shandao Temple",
+            "Blue Bannan to Zhongxiao Fuxing",
+            "Brown Wenhu line to Taipei Zoo, 9 stops ~21 min",
+            "Walk 7 min"
+          ],
+          "booked": "Gondola day pass on Klook",
+          "lat": 24.99766,
+          "lng": 121.57875
+        },
+        {
+          "id": "d2-gondola-up",
+          "time": "08:30",
+          "title": "Gondola up to Zhinan Temple",
+          "place": "Taipei Zoo Station",
+          "mapsQuery": "Maokong Gondola Taipei Zoo Station",
+          "transit": [
+            "Walk left 5 min to gondola entrance",
+            "Ride to Zhinan Temple"
+          ],
+          "lat": 24.9966115,
+          "lng": 121.5764897
+        },
+        {
+          "id": "d2-zhinan",
+          "time": "09:00",
+          "title": "Zhinan Temple trail",
+          "place": "Linxiao · Chunyang · Daxiong",
+          "mapsQuery": "Zhinan Temple Maokong",
+          "transit": [
+            "From the station, walk right to the main complex",
+            "Covered trail 5 min to the second temple",
+            "Follow the mountain trail to the third"
+          ],
+          "lat": 24.9797,
+          "lng": 121.5864
+        },
+        {
+          "id": "d2-maokong",
+          "time": "10:00",
+          "title": "Gondola to Maokong",
+          "place": "Maokong Station",
+          "mapsQuery": "Maokong Gondola Maokong Station",
+          "transit": [
+            "Ride gondola to Maokong Station"
+          ],
+          "lat": 24.9688561,
+          "lng": 121.5883017
+        },
+        {
+          "id": "d2-tea",
+          "time": "10:15",
+          "title": "Tea houses around Maokong",
+          "place": "Maokong",
+          "mapsQuery": "Maokong teahouses",
+          "transit": [
+            "Teahouses on both sides of the station"
+          ],
+          "lat": 24.9689,
+          "lng": 121.5883
+        },
+        {
+          "id": "d2-lunch",
+          "time": "11:30",
+          "title": "Lunch at Redwood Teahouse",
+          "place": "Maokong",
+          "address": "No. 33, Lane 38, Section 3, Zhinan Rd, Wenshan District, Taipei",
+          "mapsQuery": "Redwood Teahouse Maokong",
+          "transit": [
+            "View of Taipei 101"
+          ],
+          "rainy": "Indoor restaurant — no issue.",
+          "lat": 24.9695,
+          "lng": 121.5932
+        },
+        {
+          "id": "d2-gondola-down",
+          "time": "13:00",
+          "title": "Gondola down to Zoo South",
+          "place": "Taipei Zoo South Station",
+          "mapsQuery": "Maokong Gondola Taipei Zoo South Station",
+          "lat": 24.9935,
+          "lng": 121.5752
+        },
+        {
+          "id": "d2-zoo",
+          "time": "13:30",
+          "title": "Taipei Zoo",
+          "place": "Wenshan",
+          "mapsQuery": "Taipei Zoo",
+          "booked": "Zoo tickets on Klook",
+          "transit": [
+            "Small train from Gondola Station to Bird World — start uphill, walk down",
+            "Last entrance 4:00 PM · zoo closes 5:00 PM"
+          ],
+          "links": [
+            "https://english.zoo.gov.taipei/"
+          ],
+          "lat": 24.9953546,
+          "lng": 121.5861491
+        },
+        {
+          "id": "d2-raohe-travel",
+          "time": "17:30",
+          "title": "Travel to Raohe Night Market",
+          "place": "Songshan",
+          "mapsQuery": "Raohe Night Market",
+          "transit": [
+            "Walk to MRT Taipei Zoo",
+            "Bus BR18 toward Songshan, 13 stops",
+            "Walk 4 min"
+          ],
+          "lat": 25.0506792,
+          "lng": 121.5759774
+        },
+        {
+          "id": "d2-raohe",
+          "time": "18:10",
+          "title": "Dinner at Raohe Night Market",
+          "place": "Songshan",
+          "address": "Raohe St, Songshan District, Taipei",
+          "mapsQuery": "Raohe Night Market",
+          "lat": 25.0506792,
+          "lng": 121.5759774
+        },
+        {
+          "id": "d2-hotel",
+          "time": "20:30",
+          "title": "Back to hotel",
+          "place": "Mayer Inn",
+          "mapsQuery": "Mayer Inn Taipei",
+          "transit": [
+            "Walk 6 min to Songshan",
+            "Local train to Taipei ~7 min",
+            "Walk 5 min"
+          ],
+          "lat": 25.0478,
+          "lng": 121.517
+        }
+      ],
+      "extras": []
+    },
+    {
+      "id": "day-3",
+      "date": "2026-09-18",
+      "weekday": "Friday",
+      "label": "Day 3",
+      "title": "North Coast",
+      "overview": "Yehliu · Shifen · Jiufen",
+      "stops": [
+        {
+          "id": "d3-wake",
+          "time": "06:30",
+          "title": "Wake up and prepare",
+          "maps": false
+        },
+        {
+          "id": "d3-breakfast",
+          "time": "08:15",
+          "title": "Breakfast at 大城早午餐",
+          "place": "Wanhua",
+          "address": "No. 18, Guilin Rd, Wanhua District, Taipei",
+          "mapsQuery": "大城早午餐 Guilin Road Taipei",
+          "transit": [
+            "Walk 4 min to Taipei Station",
+            "Bus 202 toward Chijen High School, 3 stops ~7 min",
+            "Alight Xiaonanmen · walk 2 min"
+          ],
+          "lat": 25.0354,
+          "lng": 121.5058
+        },
+        {
+          "id": "d3-carrefour",
+          "time": "09:45",
+          "title": "Snacks at Carrefour",
+          "place": "PROSPERiTY PLAZA Guilin",
+          "address": "No. 1, Guilin Rd, Wanhua District, Taipei",
+          "mapsQuery": "Carrefour Prosperity Plaza Guilin Taipei",
+          "transit": [
+            "Walk 1 min"
+          ],
+          "lat": 25.0352,
+          "lng": 121.5055
+        },
+        {
+          "id": "d3-pickup",
+          "time": "11:00",
+          "title": "Tour pickup",
+          "place": "Hotel area",
+          "mapsQuery": "Mayer Inn Taipei",
+          "transit": [
+            "Communicate via WhatsApp"
+          ],
+          "lat": 25.0478,
+          "lng": 121.517
+        },
+        {
+          "id": "d3-tour",
+          "time": "11:10",
+          "title": "North Coast tour · Fun Journey",
+          "place": "Yehliu · Shifen · Jiufen",
+          "mapsQuery": "Yehliu Geopark",
+          "transit": [
+            "Yehliu Geopark",
+            "Shifen Waterfall",
+            "Shifen Old Street",
+            "Jiufen",
+            "Sky lanterns at Yiqiao Traditional Sky Lantern Shop (Master Lin)"
+          ],
+          "lat": 25.2113474,
+          "lng": 121.6963751
+        },
+        {
+          "id": "d3-back",
+          "time": "19:00",
+          "title": "Drop-off at Ximending",
+          "place": "Ximending",
+          "mapsQuery": "Ximending",
+          "transit": [
+            "Ask to be dropped at Ximending, not the hotel"
+          ],
+          "lat": 25.0434703,
+          "lng": 121.5071938
+        },
+        {
+          "id": "d3-dinner",
+          "time": "21:00",
+          "title": "Dinner at night market (optional)",
+          "place": "Ximending",
+          "mapsQuery": "Ximen Night Market",
+          "transit": [
+            "Blue Bannan toward Dingpu/Banqiao, 1 stop",
+            "Or walk 15–20 min"
+          ],
+          "lat": 25.0422,
+          "lng": 121.5068
+        }
+      ],
+      "extras": []
+    },
+    {
+      "id": "day-4",
+      "date": "2026-09-19",
+      "weekday": "Saturday",
+      "label": "Day 4",
+      "title": "Taichung",
+      "overview": "HSR day trip",
+      "stops": [
+        {
+          "id": "d4-wake",
+          "time": "04:30",
+          "title": "Wake up and prepare",
+          "maps": false
+        },
+        {
+          "id": "d4-711",
+          "time": "06:00",
+          "title": "Leave hotel · grab food",
+          "place": "Nearby 7-Eleven",
+          "mapsQuery": "7-Eleven Taipei Main Station",
+          "lat": 25.0478,
+          "lng": 121.517
+        },
+        {
+          "id": "d4-hsr",
+          "time": "07:00",
+          "title": "HSR to Taichung",
+          "place": "Taipei Main Station",
+          "address": "No. 49, Section 1, Zhongxiao West Road, Zhongzheng District, Taipei",
+          "mapsQuery": "THSR Taipei Station",
+          "transit": [
+            "Buy tickets on Klook (B1T1)",
+            "Walk 7 min from hotel to HSR Taipei",
+            "Food and drinks allowed on HSR",
+            "Luna rides free (no occupied seat)"
+          ],
+          "lat": 25.047554,
+          "lng": 121.5170503
+        },
+        {
+          "id": "d4-tra",
+          "time": "08:00",
+          "title": "Local train to Taichung TRA",
+          "place": "Xinwuri → Taichung",
+          "mapsQuery": "Taichung TRA Station",
+          "transit": [
+            "Walk to connected TRA Xinwuri",
+            "Local train 2366 to Taichung, 4 stops ~13 min"
+          ],
+          "lat": 24.1371092,
+          "lng": 120.6868719
+        },
+        {
+          "id": "d4-painted",
+          "time": "08:30",
+          "title": "Painted Animation Lane",
+          "place": "West District",
+          "address": "Lane 100, Linsen Rd, West District, Taichung",
+          "mapsQuery": "Painted Animation Lane Taichung",
+          "transit": [
+            "From Taichung TRA, bus 75 Sub to Linsen Sanmin Rd, 4 stops ~8 min",
+            "Walk 5 min"
+          ],
+          "lat": 24.1381683,
+          "lng": 120.6704834
+        },
+        {
+          "id": "d4-second",
+          "time": "09:00",
+          "title": "Brunch at Second Market",
+          "place": "Central District",
+          "address": "No. 87, Section 2, Sanmin Rd, Central District, Taichung",
+          "mapsQuery": "Taichung Second Market",
+          "transit": [
+            "Walk ~17 min",
+            "Eat a lot — next meal is 4–5 PM"
+          ],
+          "lat": 24.1412,
+          "lng": 120.6796
+        },
+        {
+          "id": "d4-flower",
+          "time": "12:30",
+          "title": "Zhongshe Flower Market",
+          "place": "Houli",
+          "address": "No. 333, Section 5, Sanfeng Rd, Houli District, Taichung",
+          "mapsQuery": "Zhongshe Flower Market",
+          "transit": [
+            "Walk 2 min to Second Market (Taiwan Blvd)",
+            "210 Shuttle to Taichung Station A, 3 stops",
+            "Local train 2124 to Tai'an ~30 min",
+            "Bus 839 to Zhongshe, 3 stops"
+          ],
+          "lat": 24.3350979,
+          "lng": 120.7284792
+        },
+        {
+          "id": "d4-rainbow",
+          "time": "14:00",
+          "title": "Rainbow Village",
+          "place": "Nantun",
+          "address": "No. 25, Lane 56, Chun'an Rd, Nantun District, Taichung",
+          "mapsQuery": "Rainbow Village Taichung",
+          "transit": [
+            "Uber from flower market ~30 min"
+          ],
+          "lat": 24.1335938,
+          "lng": 120.6110976
+        },
+        {
+          "id": "d4-theater",
+          "time": "15:00",
+          "title": "National Taichung Theater",
+          "place": "Xitun",
+          "address": "No. 101, Section 2, Huilai Rd, Xitun District, Taichung",
+          "mapsQuery": "National Taichung Theater",
+          "transit": [
+            "Uber from Rainbow Village ~15 min"
+          ],
+          "lat": 24.1629259,
+          "lng": 120.6405172
+        },
+        {
+          "id": "d4-minimal",
+          "time": "16:15",
+          "title": "Minimal ice cream",
+          "place": "West District",
+          "address": "No. 16, Lane 133, Section 1, Meicun Rd, West District, Taichung",
+          "mapsQuery": "Minimal ice cream Taichung",
+          "transit": [
+            "Uber ~10 min",
+            "Michelin-starred ice cream"
+          ],
+          "lat": 24.1516767,
+          "lng": 120.6623214
+        },
+        {
+          "id": "d4-chun",
+          "time": "18:00",
+          "title": "Chun Shui Tang",
+          "place": "West District",
+          "address": "No. 30, Siwei Street, West District, Taichung",
+          "mapsQuery": "Chun Shui Tang Siwei Taichung",
+          "transit": [
+            "Uber from Minimal ~10 min",
+            "Birthplace of bubble tea"
+          ],
+          "lat": 24.137617,
+          "lng": 120.6756008
+        },
+        {
+          "id": "d4-miyahara",
+          "time": "19:45",
+          "title": "Miyahara Main Shop",
+          "place": "Central District",
+          "address": "No. 20, Zhongshan Rd, Central District, Taichung",
+          "mapsQuery": "Miyahara Ice Cream Taichung",
+          "transit": [
+            "Walk 16 min from Chun Shui Tang",
+            "Long ice cream lines — buy pasalubong here, eat at the second branch"
+          ],
+          "lat": 24.1378,
+          "lng": 120.6795
+        },
+        {
+          "id": "d4-miyahara2",
+          "time": "20:30",
+          "title": "Miyahara Second Branch",
+          "place": "Central District",
+          "address": "No. 72, Zhongshan Rd, Central District, Taichung",
+          "mapsQuery": "Miyahara 2nd shop Zhongshan Taichung",
+          "transit": [
+            "Walk 3 min from main shop",
+            "Closes 9:00 PM"
+          ],
+          "lat": 24.1374,
+          "lng": 120.681
+        },
+        {
+          "id": "d4-hsr-back",
+          "time": "21:00",
+          "title": "Back to HSR Taichung",
+          "place": "Wuri",
+          "mapsQuery": "THSR Taichung Station",
+          "transit": [
+            "Walk 6 min to Taichung St (Minzu Rd)",
+            "Bus 6670D via National Expressway No. 6, 3 stops ~20 min"
+          ],
+          "lat": 24.1125,
+          "lng": 120.6162
+        },
+        {
+          "id": "d4-taipei",
+          "time": "21:30",
+          "title": "HSR to Taipei",
+          "place": "Taipei Main Station",
+          "mapsQuery": "THSR Taipei Station",
+          "transit": [
+            "HSR 140 toward Nangang, 2 stops ~50 min"
+          ],
+          "lat": 25.047554,
+          "lng": 121.5170503
+        },
+        {
+          "id": "d4-hotel",
+          "time": "22:30",
+          "title": "Back to hotel",
+          "place": "Mayer Inn",
+          "mapsQuery": "Mayer Inn Taipei",
+          "transit": [
+            "Walk from Taipei Main"
+          ],
+          "lat": 25.0478,
+          "lng": 121.517
+        }
+      ],
+      "extras": []
+    },
+    {
+      "id": "day-5",
+      "date": "2026-09-20",
+      "weekday": "Sunday",
+      "label": "Day 5",
+      "title": "Wulai",
+      "overview": "Wulai · Syntrend · Ximending",
+      "stops": [
+        {
+          "id": "d5-wake",
+          "time": "05:00",
+          "title": "Wake up and prepare",
+          "maps": false
+        },
+        {
+          "id": "d5-travel",
+          "time": "06:30",
+          "title": "Travel to Wulai",
+          "place": "Wulai Terminal",
+          "mapsQuery": "Wulai Bus Terminal",
+          "transit": [
+            "Walk to Taipei Main Station",
+            "Green Songshan–Xindian line to Xindian, 12 stops ~23 min",
+            "Bus station behind the MRT",
+            "Bus 849 to Wulai Terminal, 38 stops ~29 min"
+          ],
+          "lat": 24.8635,
+          "lng": 121.5515
+        },
+        {
+          "id": "d5-bridge",
+          "time": "08:00",
+          "title": "Wulai Suspension Bridge",
+          "place": "Nanshin River",
+          "address": "No. 35, Wenquan St, Wulai District, New Taipei City",
+          "mapsQuery": "Wulai Suspension Bridge",
+          "transit": [
+            "Walk 3 min from terminal"
+          ],
+          "lat": 24.8652,
+          "lng": 121.5512
+        },
+        {
+          "id": "d5-breakfast",
+          "time": "08:30",
+          "title": "Breakfast on Wulai Old Street",
+          "place": "Wulai Old Street",
+          "address": "No. 12, Wulai St, Wulai District, New Taipei City",
+          "mapsQuery": "Wulai Old Street",
+          "transit": [
+            "Walk 7 min"
+          ],
+          "lat": 24.86493,
+          "lng": 121.55168
+        },
+        {
+          "id": "d5-lansheng",
+          "time": "10:00",
+          "title": "Lansheng Bridge",
+          "place": "Wulai",
+          "mapsQuery": "Lansheng Bridge Wulai",
+          "transit": [
+            "Walk 2–3 min · photos"
+          ],
+          "lat": 24.863,
+          "lng": 121.5502
+        },
+        {
+          "id": "d5-train",
+          "time": "10:15",
+          "title": "Scenic train to the waterfall",
+          "place": "Wulai Scenic Train",
+          "address": "No. 2, Lane 86, Wenquan St, Wulai",
+          "mapsQuery": "Wulai Scenic Train",
+          "price": "$50",
+          "booked": "Klook roundtrip",
+          "transit": [
+            "Walk 6 min",
+            "About 8 min ride"
+          ],
+          "lat": 24.8514,
+          "lng": 121.5514
+        },
+        {
+          "id": "d5-falls",
+          "time": "10:30",
+          "title": "Wulai Waterfall",
+          "place": "TONYX cafe for the view",
+          "address": "No. 34, Pubu Rd, Wulai District, New Taipei City",
+          "mapsQuery": "Wulai Waterfall",
+          "transit": [
+            "Photos",
+            "Cafe for the best view of the falls"
+          ],
+          "lat": 24.8475159,
+          "lng": 121.552362
+        },
+        {
+          "id": "d5-cable",
+          "time": "10:35",
+          "title": "Cable car to Yun Hsien Resort",
+          "place": "Wulai",
+          "mapsQuery": "Yun Hsien Resort cable car",
+          "price": "$300",
+          "booked": "Klook in advance",
+          "transit": [
+            "Walk 1 min to the cable car"
+          ],
+          "lat": 24.8478,
+          "lng": 121.553
+        },
+        {
+          "id": "d5-yun",
+          "time": "12:30",
+          "title": "Yun Hsien Lake",
+          "place": "Yun Hsien Resort",
+          "mapsQuery": "Yun Hsien Lake Wulai",
+          "price": "$120",
+          "transit": [
+            "Boat rowing ~20 min"
+          ],
+          "lat": 24.8485,
+          "lng": 121.5545
+        },
+        {
+          "id": "d5-back-street",
+          "time": "12:45",
+          "title": "Back to Wulai Old Street",
+          "place": "Wulai",
+          "mapsQuery": "Wulai Old Street",
+          "transit": [
+            "Cable car down",
+            "Scenic train back"
+          ],
+          "lat": 24.86493,
+          "lng": 121.55168
+        },
+        {
+          "id": "d5-lunch",
+          "time": "13:00",
+          "title": "Snacks / lunch",
+          "place": "Wulai Old Street",
+          "mapsQuery": "Wulai Old Street",
+          "lat": 24.86493,
+          "lng": 121.55168
+        },
+        {
+          "id": "d5-syntrend-travel",
+          "time": "14:30",
+          "title": "Travel to Syntrend",
+          "place": "Guanghua",
+          "mapsQuery": "Syntrend Creative Park",
+          "transit": [
+            "Walk 5 min to Wulai Terminal",
+            "Bus 849 to Xindian ~26 min",
+            "Songjiang Xinsheng Main Line to Guanghua Bazaar ~38 min",
+            "Walk 2 min"
+          ],
+          "lat": 25.0453,
+          "lng": 121.5316
+        },
+        {
+          "id": "d5-syntrend",
+          "time": "16:00",
+          "title": "Syntrend",
+          "place": "Zhongzheng",
+          "address": "No. 2, Section 3, Civic Blvd, Zhongzheng District, Taipei",
+          "mapsQuery": "Syntrend Creative Park",
+          "transit": [
+            "B2–B1 food court",
+            "1F flagship tech · PopMart",
+            "6F Anime Base · Gundam Base Taiwan",
+            "7F gachapon and toys"
+          ],
+          "lat": 25.0453,
+          "lng": 121.5316
+        },
+        {
+          "id": "d5-ximen",
+          "time": "19:00",
+          "title": "Ximending · Mr Ho's",
+          "place": "Wanhua",
+          "address": "No. 25, Hanzhong St, Wanhua District, Taipei",
+          "mapsQuery": "Mr Ho's Shop Ximending",
+          "transit": [
+            "Walk 2 min to National Taipei University of Technology",
+            "Bus 205 to Guiyang St, 5 stops ~12 min",
+            "Ximen Station · walk 2 min"
+          ],
+          "lat": 25.0423,
+          "lng": 121.508
+        },
+        {
+          "id": "d5-dinner",
+          "time": "20:30",
+          "title": "Dinner at Ximen Night Market",
+          "place": "Ximending",
+          "address": "No. 36, Xining Rd, Wanhua District, Taipei",
+          "mapsQuery": "Ximen Night Market",
+          "transit": [
+            "Walk 5 min"
+          ],
+          "rainy": "Alt: Taipei 101 area for photos and dinner at Hooters",
+          "lat": 25.0422,
+          "lng": 121.5068
+        },
+        {
+          "id": "d5-hotel",
+          "time": "21:30",
+          "title": "Back to hotel",
+          "place": "Mayer Inn",
+          "mapsQuery": "Mayer Inn Taipei",
+          "lat": 25.0478,
+          "lng": 121.517
+        }
+      ],
+      "extras": [
+        {
+          "title": "Hello Kitty 7-Eleven",
+          "place": "Ximending",
+          "mapsQuery": "Hello Kitty 7-Eleven Hankou Street Taipei",
+          "note": "Second chance if missed on Day 1",
+          "lat": 25.0456,
+          "lng": 121.5103
+        },
+        {
+          "title": "Donki / Xin Fu Tang / GU",
+          "place": "Ximending",
+          "mapsQuery": "Don Don Donki Ximending",
+          "note": "Shops and beauty",
+          "lat": 25.0445001,
+          "lng": 121.5068214
+        }
+      ]
+    },
+    {
+      "id": "day-6",
+      "date": "2026-09-21",
+      "weekday": "Monday",
+      "label": "Day 6",
+      "title": "City & homebound",
+      "overview": "Shopping · airport",
+      "stops": [
+        {
+          "id": "d6-wake",
+          "time": "06:00",
+          "title": "Wake up and prepare",
+          "maps": false
+        },
+        {
+          "id": "d6-luggage",
+          "time": "07:00",
+          "title": "Pack for checkout",
+          "maps": false
+        },
+        {
+          "id": "d6-checkout",
+          "time": "08:00",
+          "title": "Check out",
+          "place": "Mayer Inn",
+          "mapsQuery": "Mayer Inn Taipei",
+          "lat": 25.0478,
+          "lng": 121.517
+        },
+        {
+          "id": "d6-lockers",
+          "time": "08:30",
+          "title": "Leave luggage",
+          "place": "Hotel or Taipei Main lockers",
+          "mapsQuery": "Taipei Main Station lockers",
+          "transit": [
+            "Hotel may hold bags free",
+            "TMS lockers mean no hotel detour before the airport"
+          ],
+          "lat": 25.0478,
+          "lng": 121.517
+        },
+        {
+          "id": "d6-brunch",
+          "time": "09:00",
+          "title": "Miss You Brunch & Cafe",
+          "place": "Zhongshan",
+          "address": "No. 18, Tianjin St, Zhongshan District, Taipei",
+          "mapsQuery": "Miss You Brunch Cafe Taipei",
+          "lat": 25.0528,
+          "lng": 121.5224
+        },
+        {
+          "id": "d6-zhongshan",
+          "time": "11:30",
+          "title": "Zhongshan shopping (optional)",
+          "place": "Zhongshan",
+          "mapsQuery": "Zhongshan Shopping District Taipei",
+          "transit": [
+            "Walk ~14 min"
+          ],
+          "lat": 25.0526,
+          "lng": 121.5204
+        },
+        {
+          "id": "d6-xinyi",
+          "time": "13:00",
+          "title": "Xinyi · Taipei 101 area",
+          "place": "Fubon Art Museum",
+          "address": "No. 79, Songgao Rd, Xinyi District, Taipei",
+          "mapsQuery": "Fubon Art Museum Taipei",
+          "transit": [
+            "Ichiran if not yet",
+            "MUJI",
+            "Another Taipei 101 view"
+          ],
+          "lat": 25.0389,
+          "lng": 121.5675
+        },
+        {
+          "id": "d6-free",
+          "time": "14:00",
+          "title": "Free afternoon · pasalubong",
+          "place": "Ximending, Syntrend, or 101",
+          "mapsQuery": "Taipei 101",
+          "transit": [
+            "Split up if you want",
+            "Be at Taipei Main by 7:30 PM"
+          ],
+          "lat": 25.0338352,
+          "lng": 121.5644995
+        },
+        {
+          "id": "d6-meet",
+          "time": "19:30",
+          "title": "Meet at Taipei Main · dinner",
+          "place": "Taipei Main Station",
+          "mapsQuery": "Taipei Main Station",
+          "lat": 25.0477214,
+          "lng": 121.5171151
+        },
+        {
+          "id": "d6-pack",
+          "time": "21:30",
+          "title": "Final luggage check",
+          "maps": false
+        },
+        {
+          "id": "d6-airport",
+          "time": "22:00",
+          "title": "Airport Express",
+          "place": "Taipei Main Station",
+          "mapsQuery": "Taoyuan Airport MRT Taipei Main",
+          "price": "$160",
+          "transit": [
+            "Airport Express ~45 min",
+            "EasyCard works"
+          ],
+          "lat": 25.0478,
+          "lng": 121.517
+        },
+        {
+          "id": "d6-tpe",
+          "time": "23:00",
+          "title": "Taoyuan Airport",
+          "place": "TPE",
+          "address": "No. 9, Hangzhan S Rd, Dayuan District, Taoyuan",
+          "mapsQuery": "Taoyuan International Airport",
+          "transit": [
+            "Check in luggage and wait"
+          ],
+          "lat": 25.0793174,
+          "lng": 121.2345977
+        }
+      ],
+      "extras": [
+        {
+          "title": "Sumikko Gurashi",
+          "place": "Zhongshan",
+          "mapsQuery": "Sumikko Gurashi Chang'an West Road Taipei",
+          "note": "After brunch",
+          "lat": 25.0506,
+          "lng": 121.5152
+        },
+        {
+          "title": "Bugcat Capoo 7-Eleven",
+          "place": "Xinyi",
+          "mapsQuery": "Bugcat Capoo 7-Eleven Keelung Road Taipei",
+          "note": "Free afternoon",
+          "lat": 25.0408,
+          "lng": 121.565
+        },
+        {
+          "title": "Starbucks Reserve Dream Plaza",
+          "place": "Xinyi",
+          "mapsQuery": "Starbucks Reserve Dream Plaza Taipei",
+          "lat": 25.0386,
+          "lng": 121.567
+        }
+      ]
+    },
+    {
+      "id": "day-7",
+      "date": "2026-09-22",
+      "weekday": "Tuesday",
+      "label": "Day 7",
+      "title": "Home",
+      "overview": "Flight home",
+      "stops": [
+        {
+          "id": "d7-flight",
+          "time": "03:15",
+          "title": "Flight to Manila",
+          "place": "Taoyuan International Airport",
+          "mapsQuery": "Taoyuan International Airport",
+          "lat": 25.0793174,
+          "lng": 121.2345977
+        },
+        {
+          "id": "d7-mnl",
+          "time": "05:45",
+          "title": "Arrive in Manila",
+          "place": "NAIA T3",
+          "mapsQuery": "NAIA Terminal 3",
+          "lat": 14.5192261,
+          "lng": 121.0137547
+        }
+      ],
+      "extras": []
+    }
+  ]
+}
